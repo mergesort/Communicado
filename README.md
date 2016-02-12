@@ -10,7 +10,7 @@ The easiest way to share from your app to anywhere, because you've got so much t
 Said some impatient brat.
 
     if (self.canShareViaFacebook()) {
-        self.shareViaFacebookWithMessage("I've got so much to say!", withImages: [ UIImage(named:"sunglasses.png") ], withURLs: [ myCoolURL ])
+        self.shareViaFacebookWithMessage("I've got so much to say!", images: [ UIImage(named:"sunglasses.png") ], URLs: [ myCoolURL ])
     } else {
         ¯\_(ツ)_/¯ // Do whatever the heck you want
     }
@@ -51,7 +51,7 @@ var sharingTitleTextAttributes: [NSObject : AnyObject]?
 Callbacks when your sharing completes are great, for example if you'd like to track analytics on where people are sharing, if into creepy things like that.
 
 ```
-var sharingCompleted: ((Bool, String) -> Void)?
+var sharingCompleted: ((success: Bool, sharingService: String) -> Void)?
 ```
 
 I've run out of words, so go and use the library!
