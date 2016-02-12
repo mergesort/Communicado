@@ -12,7 +12,7 @@ import ObjectiveC.runtime
 
 // MARK: MessageAttachment
 
-public class MessageAttachment {
+public class MessageAttachment : NSObject {
 
     let attachmentType: String
     let filename: String
