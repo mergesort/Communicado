@@ -183,6 +183,8 @@ public extension UIViewController {
     }
 
     func shareViaInstagram(image: UIImage, text: String) {
+        let sharingSucceeded: Bool
+
         if self.canShareViaInstagram() {
             if let documentsDirectory = (NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)).last {
                 let imageURL = documentsDirectory.URLByAppendingPathComponent("temporary").URLByAppendingPathExtension("igo")
@@ -199,17 +201,22 @@ public extension UIViewController {
                             "InstagramCaption" : text,
                         ]
                         documentInteractionController.presentOpenInMenuFromRect(self.view.frame, inView: self.view, animated: true)
+                        sharingSucceeded = true
                     } else {
-                        self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+                        sharingSucceeded = false
                     }
                 } else {
-                    self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+                    sharingSucceeded = false
                 }
             } else {
-                self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+                sharingSucceeded = false
             }
         } else {
-            self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+            sharingSucceeded = false
+        }
+
+        if sharingSucceeded == false { // Otherwise it will occur in the delegate callback
+            self.sharingCompleted?(success: sharingSucceeded, sharingService:UIViewController.instagramSharingService)
         }
     }
 
