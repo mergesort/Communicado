@@ -1,18 +1,19 @@
 //
-//  Sharing
+//  UIViewController+Sharing
 //  Copyright © 2016 Snarkbots. All rights reserved.
 //
 
 import UIKit
 
 import MessageUI
+import Photos
 import Social
 import ObjectiveC.runtime
 
 
 // MARK: MessageAttachment
 
-public class MessageAttachment : NSObject {
+public class MessageAttachment {
 
     let attachmentType: String
     let filename: String
@@ -29,7 +30,7 @@ public class MessageAttachment : NSObject {
 
 // MARK: SharingCompletedEvent
 
-typealias SharingCompletedEvent = ((success: Bool, sharingService: String) -> ())
+typealias SharingCompletedEvent = ((success: Bool, sharingService: String) -> Void)
 
 
 // MARK: Extension
@@ -50,6 +51,14 @@ public extension UIViewController {
 
     func canShareViaFacebook() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
+    }
+
+    func canShareViaInstagram() -> Bool {
+        if let instagramURL = NSURL(string: "instagram://") {
+            return UIApplication.sharedApplication().canOpenURL(instagramURL)
+        }
+
+        return false
     }
 
     func canShareViaSinaWeibo() -> Bool {
@@ -164,6 +173,46 @@ public extension UIViewController {
         }
     }
 
+    func saveImageToCameraRoll(image: UIImage) {
+        PHPhotoLibrary.sharedPhotoLibrary().performChanges({ _ in
+            PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+        }) { success, error in
+            let saved = (error == nil && success)
+            self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
+        }
+    }
+
+    func shareViaInstagram(image: UIImage, text: String) {
+        if self.canShareViaInstagram() {
+            if let documentsDirectory = (NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)).last {
+                let imageURL = documentsDirectory.URLByAppendingPathComponent("temporary").URLByAppendingPathExtension("igo")
+                if let imagePath = imageURL.path {
+                    let imageData = UIImageJPEGRepresentation(image, 1.0)
+                    imageData?.writeToFile(imagePath, atomically: true)
+
+                    self.sharingDocumentInteractionController = UIDocumentInteractionController(URL: imageURL)
+
+                    if let documentInteractionController = self.sharingDocumentInteractionController {
+                        documentInteractionController.delegate = self
+                        documentInteractionController.UTI = UIViewController.instagramSharingService
+                        documentInteractionController.annotation = [
+                            "InstagramCaption" : text,
+                        ]
+                        documentInteractionController.presentOpenInMenuFromRect(self.view.frame, inView: self.view, animated: true)
+                    } else {
+                        self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+                    }
+                } else {
+                    self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+                }
+            } else {
+                self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+            }
+        } else {
+            self.sharingCompleted?(success: false, sharingService:UIViewController.instagramSharingService)
+        }
+    }
+
     func shareViaCopyString(string: String?) {
         UIPasteboard.generalPasteboard().string = string
     }
@@ -176,9 +225,11 @@ public extension UIViewController {
 
 private extension UIViewController {
 
-    private static let textMessageSharingService = "com.apple.UIKit.activity.Message"
-    private static let emailSharingService = "com.apple.UIKit.activity.Mail"
-    private static let cancelledSharingService = "com.plugin.cancelled"
+    static let textMessageSharingService = "com.apple.UIKit.activity.Message"
+    static let emailSharingService = "com.apple.UIKit.activity.Mail"
+    static let cancelledSharingService = "com.plugin.cancelled"
+    static let photosSharingService = "com.apple.UIKit.photos"
+    static let instagramSharingService = "com.instagram.exclusivegram"
 
     func shareViaSLComposeViewController(network: String, message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if SLComposeViewController.isAvailableForServiceType(network) {
@@ -207,6 +258,14 @@ private extension UIViewController {
 
             self.presentViewController(composeController, animated: true, completion: nil)
         }
+    }
+
+}
+
+extension UIViewController: UIDocumentInteractionControllerDelegate {
+
+    public func documentInteractionController(controller: UIDocumentInteractionController, didEndSendingToApplication application: String?) {
+        self.sharingCompleted?(success: true, sharingService: UIViewController.instagramSharingService)
     }
 
 }
@@ -241,6 +300,7 @@ extension UIViewController {
         static var sharingBarTintColor = "UIViewController.sharingBarTintColor"
         static var sharingTitleTextAttributes = "UIViewController.sharingTitleTextAttributes"
         static var sharingCompleted = "UIViewController.sharingCompleted"
+        static var sharingDocumentInteractionController = "UIViewController.sharingDocumentInteractionController"
     }
 
     var sharingBarButtonItemTintColor: UIColor? {
@@ -265,14 +325,24 @@ extension UIViewController {
 
     var sharingCompleted: SharingCompletedEvent? {
         get {
-            if let box = objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted) as? SharingBox {
+            if let box = objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted) as? SharingCompletedEventBox {
                 return box.event
             }
 
             return nil;
         } set {
             if let value = newValue {
-                objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted, SharingBox(event: value), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted, SharingCompletedEventBox(event: value), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            }
+        }
+    }
+
+    private var sharingDocumentInteractionController: UIDocumentInteractionController? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingDocumentInteractionController) as? UIDocumentInteractionController
+        } set {
+            if let value = newValue {
+                objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingDocumentInteractionController, value, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             }
         }
     }
@@ -282,7 +352,7 @@ extension UIViewController {
 
 // MARK: Boxing so we can store the sharingCompleted closure on UIViewController
 
-private class SharingBox {
+private class SharingCompletedEventBox {
 
     var event: SharingCompletedEvent
 
