@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'Communicado'
-  spec.version      = '1.0'
+  spec.version      = '1.2'
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.homepage     = 'https://github.com/mergesort/Communicado'
   spec.authors      =  { 'Joe Fabisevich' => 'github@fabisevi.ch' }
@@ -11,4 +11,9 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
   spec.social_media_url = 'https://twitter.com/mergesort'
   spec.ios.deployment_target = '8.0'
+
+  s.subspec 'FacebookSDK' do |ss|
+    ss.source_files = 'src/UIViewController+Sharing.swift', 'src/FacebookSDK/UIViewController+FacebookAppSharing.swift'
+    ss.dependency 'FBSDKCoreKit'
+  end
 end
