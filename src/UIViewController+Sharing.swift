@@ -13,13 +13,13 @@ import ObjectiveC.runtime
 
 // MARK: MessageAttachment
 
-public class MessageAttachment {
+public final class MessageAttachment {
 
     let attachmentType: String
     let filename: String
     let data: NSData
 
-    init(attachmentType: String, filename: String, data: NSData) {
+    public init(attachmentType: String, filename: String, data: NSData) {
         self.attachmentType = attachmentType
         self.filename = filename
         self.data = data
@@ -176,9 +176,9 @@ public extension UIViewController {
     func saveImageToCameraRoll(image: UIImage) {
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({ _ in
             PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-        }) { success, error in
-            let saved = (error == nil && success)
-            self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
+            }) { success, error in
+                let saved = (error == nil && success)
+                self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
         }
     }
 
@@ -353,18 +353,18 @@ extension UIViewController {
             }
         }
     }
-
+    
 }
 
 
 // MARK: Boxing so we can store the sharingCompleted closure on UIViewController
 
 private class SharingCompletedEventBox {
-
+    
     var event: SharingCompletedEvent
-
+    
     init(event: SharingCompletedEvent) {
         self.event = event
     }
-
+    
 }
