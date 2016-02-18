@@ -30,30 +30,37 @@ public final class MessageAttachment {
 
 // MARK: SharingCompletedEvent
 
-typealias SharingCompletedEvent = ((success: Bool, sharingService: String) -> Void)
+public typealias SharingCompletedEvent = ((success: Bool, sharingService: String) -> Void)
 
 
 // MARK: Extension
 
 public extension UIViewController {
 
-    func canShareViaText() -> Bool {
+    public static var textMessageSharingService: String { get { return "com.apple.UIKit.activity.Message" } }
+    public static var emailSharingService: String { get { return "com.apple.UIKit.activity.Mail" } }
+    public static var cancelledSharingService: String { get { return "com.plugin.cancelled" } }
+    public static var photosSharingService: String { get { return "com.apple.UIKit.photos" } }
+    public static var instagramSharingService: String { get { return "com.instagram.exclusivegram" } }
+
+
+    public func canShareViaText() -> Bool {
         return MFMessageComposeViewController.canSendText()
     }
 
-    func canShareViaEmail() -> Bool {
+    public func canShareViaEmail() -> Bool {
         return MFMailComposeViewController.canSendMail()
     }
 
-    func canShareViaTwitter() -> Bool {
+    public func canShareViaTwitter() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter)
     }
 
-    func canShareViaFacebook() -> Bool {
+    public func canShareViaFacebook() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
     }
 
-    func canShareViaInstagram() -> Bool {
+    public func canShareViaInstagram() -> Bool {
         if let instagramURL = NSURL(string: "instagram://") {
             return UIApplication.sharedApplication().canOpenURL(instagramURL)
         }
@@ -61,15 +68,15 @@ public extension UIViewController {
         return false
     }
 
-    func canShareViaSinaWeibo() -> Bool {
+    public func canShareViaSinaWeibo() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeSinaWeibo)
     }
 
-    func canShareViaTencentWeibo() -> Bool {
+    public func canShareViaTencentWeibo() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeTencentWeibo)
     }
 
-    func shareViaActivityController(activityItems: [AnyObject], excludedActivityTypes: [String]?, applicationActivites: [UIActivity]?, completionItemsHandler:((activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?) -> ())?) {
+    public func shareViaActivityController(activityItems: [AnyObject], excludedActivityTypes: [String]?, applicationActivites: [UIActivity]?, completionItemsHandler:((activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?) -> ())?) {
         let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivites)
         activityController.excludedActivityTypes = excludedActivityTypes
 
@@ -85,7 +92,7 @@ public extension UIViewController {
         self.presentViewController(activityController, animated: true, completion: nil)
     }
 
-    func shareViaTextMessage(message: String?, attachments:[MessageAttachment]?) {
+    public func shareViaTextMessage(message: String?, attachments:[MessageAttachment]?) {
         if self.canShareViaText() {
             let messageController = MFMessageComposeViewController()
             messageController.messageComposeDelegate = self
@@ -111,7 +118,7 @@ public extension UIViewController {
         }
     }
 
-    func shareViaEmailWithSubject(subject: String?, message: String?, isHTML: Bool, toRecepients:[String]?, ccRecepients:[String]?, bccRecepients:[String]?, attachments:[MessageAttachment]?) {
+    public func shareViaEmailWithSubject(subject: String?, message: String?, isHTML: Bool, toRecepients:[String]?, ccRecepients:[String]?, bccRecepients:[String]?, attachments:[MessageAttachment]?) {
         if self.canShareViaEmail() {
             let mailController = MFMailComposeViewController()
             mailController.mailComposeDelegate = self;
@@ -141,7 +148,7 @@ public extension UIViewController {
         }
     }
 
-    func shareViaFacebook(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
+    public func shareViaFacebook(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if self.canShareViaFacebook() {
             self.shareViaSLComposeViewController(SLServiceTypeFacebook, message: message, images: images, URLs: URLs)
         } else {
@@ -149,7 +156,7 @@ public extension UIViewController {
         }
     }
 
-    func shareViaTwitter(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
+    public func shareViaTwitter(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if self.canShareViaTwitter() {
             self.shareViaSLComposeViewController(SLServiceTypeTwitter, message: message, images: images, URLs: URLs)
         } else {
@@ -157,7 +164,7 @@ public extension UIViewController {
         }
     }
 
-    func shareViaSinaWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
+    public func shareViaSinaWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if self.canShareViaSinaWeibo() {
             self.shareViaSLComposeViewController(SLServiceTypeTwitter, message: message, images: images, URLs: URLs)
         } else {
@@ -165,7 +172,7 @@ public extension UIViewController {
         }
     }
 
-    func shareViaTencentWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
+    public func shareViaTencentWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if self.canShareViaTencentWeibo() {
             self.shareViaSLComposeViewController(SLServiceTypeTwitter, message: message, images: images, URLs: URLs)
         } else {
@@ -173,16 +180,16 @@ public extension UIViewController {
         }
     }
 
-    func saveImageToCameraRoll(image: UIImage) {
+    public func saveImageToCameraRoll(image: UIImage) {
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({ _ in
             PHAssetChangeRequest.creationRequestForAssetFromImage(image)
-            }) { success, error in
-                let saved = (error == nil && success)
-                self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
+        }) { success, error in
+            let saved = (error == nil && success)
+            self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
         }
     }
 
-    func shareViaInstagram(image: UIImage, text: String) {
+    public func shareViaInstagram(image: UIImage, text: String?) {
         let sharingSucceeded: Bool
 
         if self.canShareViaInstagram() {
@@ -197,9 +204,11 @@ public extension UIViewController {
                     if let documentInteractionController = self.sharingDocumentInteractionController {
                         documentInteractionController.delegate = self
                         documentInteractionController.UTI = UIViewController.instagramSharingService
-                        documentInteractionController.annotation = [
-                            "InstagramCaption" : text,
-                        ]
+                        if let text = text {
+                            documentInteractionController.annotation = [
+                                "InstagramCaption" : text,
+                            ]
+                        }
                         documentInteractionController.presentOpenInMenuFromRect(self.view.frame, inView: self.view, animated: true)
                         sharingSucceeded = true
                     } else {
@@ -220,23 +229,17 @@ public extension UIViewController {
         }
     }
 
-    func shareViaCopyString(string: String?) {
+    public func shareViaCopyString(string: String?) {
         UIPasteboard.generalPasteboard().string = string
     }
 
-    func shareViaCopyURL(URL: NSURL?) {
+    public func shareViaCopyURL(URL: NSURL?) {
         UIPasteboard.generalPasteboard().URL = URL
     }
 
 }
 
 private extension UIViewController {
-
-    static let textMessageSharingService = "com.apple.UIKit.activity.Message"
-    static let emailSharingService = "com.apple.UIKit.activity.Mail"
-    static let cancelledSharingService = "com.plugin.cancelled"
-    static let photosSharingService = "com.apple.UIKit.photos"
-    static let instagramSharingService = "com.instagram.exclusivegram"
 
     func shareViaSLComposeViewController(network: String, message: String?, images: [UIImage]?, URLs: [NSURL]?) {
         if SLComposeViewController.isAvailableForServiceType(network) {
@@ -300,7 +303,7 @@ extension UIViewController: MFMessageComposeViewControllerDelegate {
 
 // MARK: Associated objects
 
-extension UIViewController {
+public extension UIViewController {
 
     private struct AssociatedObjectKeys {
         static var sharingBarButtonItemTintColor = "UIViewController.sharingBarButtonItemTintColor"
@@ -310,7 +313,7 @@ extension UIViewController {
         static var sharingDocumentInteractionController = "UIViewController.sharingDocumentInteractionController"
     }
 
-    var sharingBarButtonItemTintColor: UIColor? {
+    public var sharingBarButtonItemTintColor: UIColor? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemTintColor) as? UIColor
         } set {
@@ -320,7 +323,7 @@ extension UIViewController {
         }
     }
 
-    var sharingTitleTextAttributes: [ String : NSObject ]? {
+    public var sharingTitleTextAttributes: [ String : NSObject ]? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes) as? [ String : NSObject ]
         } set {
@@ -330,7 +333,7 @@ extension UIViewController {
         }
     }
 
-    var sharingCompleted: SharingCompletedEvent? {
+    public var sharingCompleted: SharingCompletedEvent? {
         get {
             if let box = objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted) as? SharingCompletedEventBox {
                 return box.event
