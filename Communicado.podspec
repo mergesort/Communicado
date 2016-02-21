@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = '8.0'
 
   spec.subspec 'FacebookSDK' do |subspec|
-    subspec.source_files = 'src/UIViewController+Sharing.swift', 'src/FacebookSDK/UIViewController+FacebookAppSharing.swift'
+    subspec.source_files = 'src/UIViewController+Sharing.swift', 'src/FacebookSDK/UIViewController+FacebookSDKSharing.swift'
     subspec.dependency 'FBSDKCoreKit'
   end
 end
