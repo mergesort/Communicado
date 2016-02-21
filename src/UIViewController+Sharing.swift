@@ -1,6 +1,6 @@
 //
 //  UIViewController+Sharing
-//  Copyright © 2016 Snarkbots. All rights reserved.
+//  Copyright © 2016 Joseph Fabisevich (@mergesort). All rights reserved.
 //
 
 import UIKit
@@ -42,7 +42,6 @@ public extension UIViewController {
     public static var cancelledSharingService: String { get { return "com.plugin.cancelled" } }
     public static var photosSharingService: String { get { return "com.apple.UIKit.photos" } }
     public static var instagramSharingService: String { get { return "com.instagram.exclusivegram" } }
-
 
     public func canShareViaText() -> Bool {
         return MFMessageComposeViewController.canSendText()
@@ -182,7 +181,8 @@ public extension UIViewController {
 
     public func saveImageToCameraRoll(image: UIImage) {
         PHPhotoLibrary.sharedPhotoLibrary().performChanges({ _ in
-            PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+            let changeRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(image)
+            changeRequest.creationDate = NSDate()
         }) { success, error in
             let saved = (error == nil && success)
             self.sharingCompleted?(success: saved, sharingService:UIViewController.photosSharingService)
