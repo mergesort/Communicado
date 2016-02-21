@@ -14,6 +14,6 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'FacebookSDK' do |subspec|
     subspec.source_files = 'src/*.swift', 'src/FacebookSDK/*.swift'
-    subspec.dependency 'FBSDKCoreKit'
+    subspec.dependency 'FBSDKShareKit'
   end
 end
