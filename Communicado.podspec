@@ -12,8 +12,8 @@ Pod::Spec.new do |spec|
   spec.social_media_url = 'https://twitter.com/mergesort'
   spec.ios.deployment_target = '8.0'
 
-  spec.subspec 'FacebookSDK' do |subspec|
-    subspec.source_files = 'src/*.swift', 'src/FacebookSDK/*.swift'
-    subspec.dependency 'FBSDKShareKit'
-  end
+  #spec.subspec 'FacebookSDK' do |subspec|
+  #  subspec.source_files = 'src/*.swift', 'src/FacebookSDK/*.swift'
+  #  subspec.dependency 'FBSDKShareKit'
+  #end
 end
