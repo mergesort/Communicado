@@ -232,6 +232,11 @@ public extension UIViewController {
     public func shareViaCopyString(string: String?) {
         UIPasteboard.generalPasteboard().string = string
     }
+    
+    public func shareViaCopyImage(image: UIImage) {
+        UIPasteboard.generalPasteboard().image = image
+    }
+
 
     public func shareViaCopyURL(URL: NSURL?) {
         UIPasteboard.generalPasteboard().URL = URL
