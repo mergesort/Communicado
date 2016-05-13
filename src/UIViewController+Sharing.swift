@@ -346,9 +346,7 @@ public extension UIViewController {
 
             return nil;
         } set {
-            if let value = newValue {
-                objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted, SharingCompletedEventBox(event: value), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
+            objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted, SharingCompletedEventBox(event: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
@@ -369,9 +367,9 @@ public extension UIViewController {
 
 private class SharingCompletedEventBox {
     
-    var event: SharingCompletedEvent
+    var event: SharingCompletedEvent?
     
-    init(event: SharingCompletedEvent) {
+    init(event: SharingCompletedEvent?) {
         self.event = event
     }
     
