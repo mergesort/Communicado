@@ -233,7 +233,11 @@ public extension UIViewController {
         UIPasteboard.generalPasteboard().string = string
     }
     
-    public func shareViaCopyImage(image: UIImage) {
+    public func shareViaCopyImage(image: UIImage?) {
+        guard let image = image else {
+            return
+        }
+
         UIPasteboard.generalPasteboard().image = image
     }
 
