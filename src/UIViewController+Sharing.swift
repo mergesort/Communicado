@@ -41,7 +41,6 @@ public extension UIViewController {
     public static var emailSharingService: String { get { return "com.apple.UIKit.activity.Mail" } }
     public static var cancelledSharingService: String { get { return "com.plugin.cancelled" } }
     public static var photosSharingService: String { get { return "com.apple.UIKit.photos" } }
-    public static var instagramSharingService: String { get { return "com.instagram.exclusivegram" } }
 
     public func canShareViaText() -> Bool {
         return MFMessageComposeViewController.canSendText()
@@ -57,14 +56,6 @@ public extension UIViewController {
 
     public func canShareViaFacebook() -> Bool {
         return SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
-    }
-
-    public func canShareViaInstagram() -> Bool {
-        if let instagramURL = NSURL(string: "instagram://") {
-            return UIApplication.sharedApplication().canOpenURL(instagramURL)
-        }
-
-        return false
     }
 
     public func canShareViaSinaWeibo() -> Bool {
@@ -189,46 +180,6 @@ public extension UIViewController {
         }
     }
 
-    public func shareViaInstagram(image: UIImage, text: String?) {
-        let sharingSucceeded: Bool
-
-        if self.canShareViaInstagram() {
-            if let documentsDirectory = (NSFileManager.defaultManager().URLsForDirectory(NSSearchPathDirectory.DocumentDirectory, inDomains: NSSearchPathDomainMask.UserDomainMask)).last {
-                let imageURL = documentsDirectory.URLByAppendingPathComponent("temporary").URLByAppendingPathExtension("igo")
-                if let imagePath = imageURL.path {
-                    let imageData = UIImageJPEGRepresentation(image, 1.0)
-                    imageData?.writeToFile(imagePath, atomically: true)
-
-                    self.sharingDocumentInteractionController = UIDocumentInteractionController(URL: imageURL)
-
-                    if let documentInteractionController = self.sharingDocumentInteractionController {
-                        documentInteractionController.delegate = self
-                        documentInteractionController.UTI = UIViewController.instagramSharingService
-                        if let text = text {
-                            documentInteractionController.annotation = [
-                                "InstagramCaption" : text,
-                            ]
-                        }
-                        documentInteractionController.presentOpenInMenuFromRect(self.view.frame, inView: self.view, animated: true)
-                        sharingSucceeded = true
-                    } else {
-                        sharingSucceeded = false
-                    }
-                } else {
-                    sharingSucceeded = false
-                }
-            } else {
-                sharingSucceeded = false
-            }
-        } else {
-            sharingSucceeded = false
-        }
-
-        if sharingSucceeded == false { // Otherwise it will occur in the delegate callback
-            self.sharingCompleted?(success: sharingSucceeded, sharingService:UIViewController.instagramSharingService)
-        }
-    }
-
     public func shareViaCopyString(string: String?) {
         UIPasteboard.generalPasteboard().string = string
     }
@@ -273,14 +224,6 @@ private extension UIViewController {
 
             self.presentViewController(composeController, animated: true, completion: nil)
         }
-    }
-
-}
-
-extension UIViewController: UIDocumentInteractionControllerDelegate {
-
-    public func documentInteractionController(controller: UIDocumentInteractionController, didEndSendingToApplication application: String?) {
-        self.sharingCompleted?(success: true, sharingService: UIViewController.instagramSharingService)
     }
 
 }
