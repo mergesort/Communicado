@@ -64,7 +64,7 @@ public enum ShareDestination {
         }
     }
 
-    public var network: String {
+    public var name: String {
         switch self {
 
         case .text(_):
@@ -98,7 +98,7 @@ public enum ShareDestination {
     }
 
     var activityType: UIActivityType {
-        return UIActivityType(self.network)
+        return UIActivityType(self.name)
     }
 
     public static let cancelled = UIActivityType("com.plugin.cancelled")
@@ -107,9 +107,9 @@ public enum ShareDestination {
 
 public extension UIViewController {
 
-    func share(network shareNetwork: ShareDestination) {
-        if shareNetwork.canShare {
-            switch shareNetwork {
+    func share(destination: ShareDestination) {
+        if destination.canShare {
+            switch destination {
 
             case .text(let parameters):
                 self.share(textParameters: parameters)
@@ -118,16 +118,16 @@ public extension UIViewController {
                 self.share(mailParameters: parameters)
 
             case .twitter(let parameters):
-                self.share(socialParameters: parameters, network: shareNetwork.network)
+                self.share(socialParameters: parameters, network: destination.name)
 
             case .facebook(let parameters):
-                self.share(socialParameters: parameters, network: shareNetwork.network)
+                self.share(socialParameters: parameters, network: destination.name)
 
             case .sinaWeibo(let parameters):
-                self.share(socialParameters: parameters, network: shareNetwork.network)
+                self.share(socialParameters: parameters, network: destination.name)
 
             case .tencentWeibo(let parameters):
-                self.share(socialParameters: parameters, network: shareNetwork.network)
+                self.share(socialParameters: parameters, network: destination.name)
 
             case .pasteboard(let parameters):
                 self.share(pasteboardParmaeters: parameters)
@@ -140,7 +140,7 @@ public extension UIViewController {
 
             }
         } else {
-            self.sharingCompleted?((success: false, sharingService: shareNetwork.activityType))
+            self.sharingCompleted?((success: false, sharingService: destination.activityType))
         }
     }
 
