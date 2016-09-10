@@ -21,15 +21,15 @@ The first thing to know is the available methods for sharing.
 ```swift
 public enum ShareDestination {
 
-    case text(parameters: TextShareParameters)
-    case email(parameters: MailShareParameters)
-    case twitter(parameters: SocialShareParameters)
-    case facebook(parameters: SocialShareParameters)
-    case sinaWeibo(parameters: SocialShareParameters)
-    case tencentWeibo(parameters: SocialShareParameters)
-    case pasteboard(parameters: PasteboardShareParameters)
-    case photos(parameters: PhotosShareParameters)
-    case activityController(parameters: ActivityShareParameters)
+    case text
+    case email
+    case twitter
+    case facebook
+    case sinaWeibo
+    case tencentWeibo
+    case pasteboard
+    case photos
+    case activityController
 
 }
 ```
@@ -39,16 +39,25 @@ Each sharing destination takes in parameters. Let's try a simple example.
 ```swift
 let attachment = MessageAttachment(attachmentType: "image/png", filename: "heart.png", data: heartImageData)
 let textParameters = TextShareParameters(message: "I love my users.", attachments: [ attachment ])
-let textDestination = ShareDestination.text(parameters: textParameters)
 ```
 
 Now let's call the **ONLY** method that's even available to you.
 
 ```swift
-self.share(destination: textDestination)
+self.share(textParameters: textParameters)
 ```
 
 And we're done! If everything went well, you can send a text with that wonderful heart image to all your favorite users.
+
+You can do the same for the other sharing types as well.
+
+```swift
+self.share(mailParameters: MailShareParameters)
+self.share(socialParameters: SocialShareParameters)
+self.share(activityParameters: ActivityShareParameters)
+self.share(photosParameters: PhotosShareParameters)
+self.share(pasteboardParmaeters: PasteboardShareParameters)
+```
 
 Now all you can try this for all the kinds of sharing that you'd like to use in your app!
 
