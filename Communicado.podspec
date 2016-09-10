@@ -10,10 +10,6 @@ Pod::Spec.new do |spec|
   spec.framework    = 'Foundation'
   spec.requires_arc = true
   spec.social_media_url = 'https://twitter.com/mergesort'
-  spec.ios.deployment_target = '8.0'
-
-  spec.subspec 'FacebookSDK' do |subspec|
-    subspec.source_files = 'src/*.swift'
-  end
+  spec.ios.deployment_target = '9.0'
 
 end
