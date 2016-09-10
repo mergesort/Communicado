@@ -137,7 +137,7 @@ public extension UIViewController {
     /// Share using UIActivityViewController.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing when using UIActivityViewController.
-    func share(activityParameters parameters: ActivityShareParameters) {
+    func share(_ parameters: ActivityShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) { 
             let activityController = UIActivityViewController(activityItems: parameters.activityItems, applicationActivities: parameters.applicationActivites)
             activityController.excludedActivityTypes = parameters.excludedActivityTypes
@@ -156,7 +156,7 @@ public extension UIViewController {
     /// Share to the Messages app.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to Messages.
-    func share(textParameters parameters: TextShareParameters) {
+    func share(_ parameters: TextShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let messageController = MFMessageComposeViewController()
             messageController.messageComposeDelegate = self
@@ -166,7 +166,7 @@ public extension UIViewController {
             messageController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
 
             parameters.attachments?.forEach { attachment in
-                messageController.addAttachmentData(attachment.data, typeIdentifier: attachment.attachmentType, filename: attachment.filename)
+                messageController.addAttachmentData(attachment.data, typeIdentifier: attachment.attachmentType.identifier, filename: attachment.filename)
             }
 
             self.present(messageController, animated: true, completion: nil)
@@ -176,7 +176,7 @@ public extension UIViewController {
     /// Share to the Mail app.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to Mail.
-    func share(mailParameters parameters: MailShareParameters) {
+    func share(_ parameters: MailShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let mailController = MFMailComposeViewController()
             mailController.mailComposeDelegate = self
@@ -190,7 +190,7 @@ public extension UIViewController {
             mailController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
 
             parameters.attachments?.forEach { attachment in
-                mailController.addAttachmentData(attachment.data, mimeType: attachment.attachmentType, fileName: attachment.filename)
+                mailController.addAttachmentData(attachment.data, mimeType: attachment.attachmentType.identifier, fileName: attachment.filename)
             }
             
             self.present(mailController, animated: true, completion: nil)
@@ -201,7 +201,7 @@ public extension UIViewController {
     /// This includes SocialNetwork.twitter, .facebook, .sinaWeibo, and .tencentWeibo.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to a social network.
-    func share(socialParameters parameters: SocialShareParameters) {
+    func share(_ parameters: SocialShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let destination = parameters.network.shareDestination
             if let composeController = SLComposeViewController(forServiceType: destination.name) {
@@ -224,7 +224,7 @@ public extension UIViewController {
     /// Share to the user's pasteboard.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to the pasteboard.
-    func share(pasteboardParmaeters parameters: PasteboardShareParameters) {
+    func share(_ parameters: PasteboardShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             UIPasteboard.general.url = parameters.url
             UIPasteboard.general.image = parameters.image
@@ -235,7 +235,7 @@ public extension UIViewController {
     /// Share to the user's photo library.
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to the photo library.
-    func share(photosParameters parameters: PhotosShareParameters) {
+    func share(_ parameters: PhotosShareParameters) {
         PHPhotoLibrary.shared().performChanges({ _ in
             let changeRequest = PHAssetChangeRequest.creationRequestForAsset(from: parameters.image)
             changeRequest.creationDate = Date()
@@ -370,9 +370,9 @@ public struct ActivityShareParameters {
 public struct TextShareParameters {
 
     let message: String?
-    let attachments: [MessageAttachment]?
+    let attachments: [Attachment]?
 
-    init(message: String? = nil, attachments: [MessageAttachment]? = nil) {
+    init(message: String? = nil, attachments: [Attachment]? = nil) {
         self.message = message
         self.attachments = attachments
     }
@@ -387,9 +387,9 @@ public struct MailShareParameters {
     let toRecepients: [String]?
     let ccRecepients: [String]?
     let bccRecepients: [String]?
-    let attachments: [MessageAttachment]?
+    let attachments: [Attachment]?
 
-    init(subject: String? = nil, message: String? = nil, isHTML: Bool = false, toRecepients: [String]? = nil, ccRecepients: [String]? = nil, bccRecepients: [String]? = nil, attachments: [MessageAttachment]? = nil) {
+    init(subject: String? = nil, message: String? = nil, isHTML: Bool = false, toRecepients: [String]? = nil, ccRecepients: [String]? = nil, bccRecepients: [String]? = nil, attachments: [Attachment]? = nil) {
         self.subject = subject
         self.message = message
         self.isHTML = isHTML
@@ -425,16 +425,91 @@ public struct PhotosShareParameters {
 
 }
 
-public struct MessageAttachment {
+public struct Attachment {
 
-    let attachmentType: String
+    let attachmentType: AttachmentType
     let filename: String
     let data: Data
 
-    public init(attachmentType: String, filename: String, data: Data) {
+    public init(attachmentType: AttachmentType, filename: String, data: Data) {
         self.attachmentType = attachmentType
         self.filename = filename
         self.data = data
+    }
+
+}
+
+public enum AttachmentType {
+
+    case aiff
+    case avi
+    case gif
+    case html
+    case jpg
+    case mov
+    case mp3
+    case mp4
+    case pdf
+    case plainText
+    case png
+    case psd
+    case rtf
+    case tiff
+    case zip
+    case custom(value: String)
+
+    var identifier: String {
+        switch self {
+
+        case .aiff:
+            return "audio/aiff"
+
+        case .avi:
+            return "video/avi"
+
+        case .gif:
+            return "image/gif"
+
+        case .html:
+            return "text/html"
+
+        case .jpg:
+            return "image/jpeg"
+
+        case .mov:
+            return "video/quicktime"
+
+        case .mp3:
+            return "audio/mp3"
+
+        case .mp4:
+            return "video/mp4"
+
+        case .pdf:
+            return "application/pdf"
+
+        case .plainText:
+            return "text/plain"
+
+        case .png:
+            return "image/png"
+
+        case .psd:
+            return "image/psd"
+
+        case .rtf:
+            return "text/rtf"
+
+        case .tiff:
+            return "image/tiff"
+
+        case .zip:
+            return "application/zip"
+
+        case .custom(let value):
+            return value
+
+        }
     }
 
 }
