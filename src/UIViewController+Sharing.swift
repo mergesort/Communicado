@@ -17,7 +17,7 @@ public typealias SharingType = (success: Bool, sharingService: UIActivityType)
 public typealias SharingCompletedEvent = (SharingType) -> Void
 
 
-// ShareNetwork
+// MARK: ShareDestination
 
 public enum ShareDestination {
 
@@ -132,9 +132,11 @@ public enum ShareDestination {
 
 }
 
-
 public extension UIViewController {
 
+    /// Share using UIActivityViewController.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing when using UIActivityViewController.
     func share(activityParameters parameters: ActivityShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) { 
             let activityController = UIActivityViewController(activityItems: parameters.activityItems, applicationActivities: parameters.applicationActivites)
@@ -151,6 +153,9 @@ public extension UIViewController {
         }
     }
 
+    /// Share to the Messages app.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing to Messages.
     func share(textParameters parameters: TextShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let messageController = MFMessageComposeViewController()
@@ -168,6 +173,9 @@ public extension UIViewController {
         }
     }
 
+    /// Share to the Mail app.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing to Mail.
     func share(mailParameters parameters: MailShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let mailController = MFMailComposeViewController()
@@ -189,7 +197,10 @@ public extension UIViewController {
         }
     }
 
-
+    /// Share to a social network.
+    /// This includes SocialNetwork.twitter, .facebook, .sinaWeibo, and .tencentWeibo.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing to a social network.
     func share(socialParameters parameters: SocialShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             let destination = parameters.network.shareDestination
@@ -210,6 +221,9 @@ public extension UIViewController {
         }
     }
 
+    /// Share to the user's pasteboard.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing to the pasteboard.
     func share(pasteboardParmaeters parameters: PasteboardShareParameters) {
         self.shareIfPossible(destination: ShareDestination.activityController) {
             UIPasteboard.general.url = parameters.url
@@ -218,6 +232,9 @@ public extension UIViewController {
         }
     }
 
+    /// Share to the user's photo library.
+    ///
+    /// - parameter parameters: Parameters that are applicable for sharing to the photo library.
     func share(photosParameters parameters: PhotosShareParameters) {
         PHPhotoLibrary.shared().performChanges({ _ in
             let changeRequest = PHAssetChangeRequest.creationRequestForAsset(from: parameters.image)
@@ -253,9 +270,12 @@ extension UIViewController: MFMessageComposeViewControllerDelegate {
 
 }
 
-
 private extension UIViewController {
 
+    /// A method that determines whether we can currently share to a specified ShareDestination.
+    ///
+    /// - parameter destination:    The ShareDestination whose availability we should check.
+    /// - parameter canShareAction: The action to take if you can indeed share to a destination.
     func shareIfPossible(destination: ShareDestination, canShareAction: () -> Void) {
         if destination.canShare {
             canShareAction()
@@ -278,6 +298,7 @@ public extension UIViewController {
         static var sharingCompleted = "UIViewController.sharingCompleted"
     }
 
+    /// A property for configuring the tintColor on MFMailComposeViewController or MFMessageComposeViewController.
     public var sharingBarButtonItemTintColor: UIColor? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemTintColor) as? UIColor
@@ -288,6 +309,7 @@ public extension UIViewController {
         }
     }
 
+    /// A property for configuring the titleTextAttributes on MFMailComposeViewController or MFMessageComposeViewController.
     public var sharingTitleTextAttributes: [ String : NSObject ]? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes) as? [ String : NSObject ]
@@ -298,6 +320,7 @@ public extension UIViewController {
         }
     }
 
+    /// A closure that fires when a sharing event completes, whether it is succeeds or fails.
     public var sharingCompleted: SharingCompletedEvent? {
         get {
             if let box = objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted) as? SharingCompletedEventBox {
@@ -416,9 +439,7 @@ public struct MessageAttachment {
 
 }
 
-
-// MARK: Boxing so we can store the sharingCompleted closure on UIViewController
-
+// Boxing so we can store the sharingCompleted closure on UIViewController
 private class SharingCompletedEventBox {
 
     var event: SharingCompletedEvent?
