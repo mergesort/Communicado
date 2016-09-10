@@ -1,6 +1,6 @@
 # Communicado
 
-#### Are you tired of rewriting the same sharing code over and over again?
+## Are you tired of rewriting the same sharing code over and over again?
 
 ![](gifs/cartman.gif)
 
@@ -9,6 +9,8 @@
 ![](gifs/homer.gif)
 
 #### That's why I wrote Communicado!
+
+---
 
 Communicado is the simplest way to share using iOS built in methods. If you use this correctly, you'll end up with a whole lot more time to sleep.
 
@@ -37,26 +39,27 @@ public enum ShareDestination {
 Each sharing destination takes in parameters. Let's try a simple example.
 
 ```swift
-let attachment = MessageAttachment(attachmentType: "image/png", filename: "heart.png", data: heartImageData)
+let heartImageData = UIImagePNGRepresentation(myHeartImage)
+let attachment = Attachment(attachmentType: AttachmentType.png, filename: "heart.png", data: heartImageData)
 let textParameters = TextShareParameters(message: "I love my users.", attachments: [ attachment ])
 ```
 
 Now let's call the **ONLY** method that's even available to you.
 
 ```swift
-self.share(textParameters: textParameters)
+self.share(textParameters)
 ```
 
 And we're done! If everything went well, you can send a text with that wonderful heart image to all your favorite users.
 
-You can do the same for the other sharing types as well.
+**You can do the same for the other sharing types as well.**
 
 ```swift
-self.share(mailParameters: MailShareParameters)
-self.share(socialParameters: SocialShareParameters)
-self.share(activityParameters: ActivityShareParameters)
-self.share(photosParameters: PhotosShareParameters)
-self.share(pasteboardParmaeters: PasteboardShareParameters)
+self.share(MailShareParameters)
+self.share(SocialShareParameters)
+self.share(ActivityShareParameters)
+self.share(PhotosShareParameters)
+self.share(PasteboardShareParameters)
 ```
 
 Now all you can try this for all the kinds of sharing that you'd like to use in your app!
@@ -64,15 +67,16 @@ Now all you can try this for all the kinds of sharing that you'd like to use in 
 ![](gifs/yay.gif)
 
 ## Installation
-You can use CocoaPods to install Anchorman by adding it to your Podfile:
+You can use [CocoaPods](http://cocoapods.org/) to install `Communicado` by adding it to your `Podfile`:
 
 ```swift
 platform :ios, '9.0'
+use_frameworks!
+
 pod 'Communicado'
 ```
 
-Or install it manually by downloading Anchorman.swift and dropping it in your project.
-
+Or install it manually by downloading `UIViewController+Sharing.swift` and dropping it in your project.
 
 ## About me
 
@@ -80,7 +84,7 @@ Hi, I'm [Joe](http://fabisevi.ch) everywhere on the web, but especially on [Twit
 
 ## License
 
-See the [license](LICENSE) for more information about how you can use Anchorman. I promise it's not GPL, because I am not "that guy".
+See the [license](LICENSE) for more information about how you can use Communicado. I promise it's not GPL, because I am not "that guy".
 
 ## The end?
 
