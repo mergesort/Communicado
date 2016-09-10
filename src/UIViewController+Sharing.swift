@@ -93,7 +93,7 @@ public enum ShareDestination {
 
         case .activityController:
             return "com.apple.activityController"
-            
+
         }
     }
 
@@ -121,13 +121,13 @@ public enum ShareDestination {
 
             case .sinaWeibo:
                 return ShareDestination.sinaWeibo
-                
+
             case .tencentWeibo:
                 return ShareDestination.tencentWeibo
-                
+
             }
         }
-        
+
     }
 
 }
@@ -138,7 +138,7 @@ public extension UIViewController {
     ///
     /// - parameter parameters: Parameters that are applicable for sharing when using UIActivityViewController.
     func share(_ parameters: ActivityShareParameters) {
-        self.shareIfPossible(destination: ShareDestination.activityController) { 
+        self.shareIfPossible(destination: ShareDestination.activityController) {
             let activityController = UIActivityViewController(activityItems: parameters.activityItems, applicationActivities: parameters.applicationActivites)
             activityController.excludedActivityTypes = parameters.excludedActivityTypes
 
@@ -192,7 +192,7 @@ public extension UIViewController {
             parameters.attachments?.forEach { attachment in
                 mailController.addAttachmentData(attachment.data, mimeType: attachment.attachmentType.identifier, fileName: attachment.filename)
             }
-            
+
             self.present(mailController, animated: true, completion: nil)
         }
     }
@@ -283,7 +283,7 @@ private extension UIViewController {
             self.sharingCompleted?((success: false, sharingService: destination.activityType))
         }
     }
-    
+
 }
 
 
@@ -337,12 +337,12 @@ public extension UIViewController {
 
 public struct SocialShareParameters {
 
-    let network: ShareDestination.SocialNetwork
-    let message: String?
-    let images: [UIImage]?
-    let urls: [URL]?
+    public let network: ShareDestination.SocialNetwork
+    public let message: String?
+    public let images: [UIImage]?
+    public let urls: [URL]?
 
-    init(network: ShareDestination.SocialNetwork, message: String? = nil, images: [UIImage]? = nil, urls: [URL]? = nil) {
+    public init(network: ShareDestination.SocialNetwork, message: String? = nil, images: [UIImage]? = nil, urls: [URL]? = nil) {
         self.network = network
         self.message = message
         self.images = images
@@ -353,12 +353,12 @@ public struct SocialShareParameters {
 
 public struct ActivityShareParameters {
 
-    let activityItems: [AnyObject]
-    let excludedActivityTypes: [UIActivityType]?
-    let applicationActivites: [UIActivity]?
-    let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
+    public let activityItems: [AnyObject]
+    public let excludedActivityTypes: [UIActivityType]?
+    public let applicationActivites: [UIActivity]?
+    public let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
 
-    init(activityItems: [AnyObject], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
+    public init(activityItems: [AnyObject], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
         self.activityItems = activityItems
         self.excludedActivityTypes = excludedActivityTypes
         self.applicationActivites = applicationActivites
@@ -369,10 +369,10 @@ public struct ActivityShareParameters {
 
 public struct TextShareParameters {
 
-    let message: String?
-    let attachments: [Attachment]?
+    public let message: String?
+    public let attachments: [Attachment]?
 
-    init(message: String? = nil, attachments: [Attachment]? = nil) {
+    public init(message: String? = nil, attachments: [Attachment]? = nil) {
         self.message = message
         self.attachments = attachments
     }
@@ -381,15 +381,15 @@ public struct TextShareParameters {
 
 public struct MailShareParameters {
 
-    let subject: String?
-    let message: String?
-    let isHTML: Bool
-    let toRecepients: [String]?
-    let ccRecepients: [String]?
-    let bccRecepients: [String]?
-    let attachments: [Attachment]?
+    public let subject: String?
+    public let message: String?
+    public let isHTML: Bool
+    public let toRecepients: [String]?
+    public let ccRecepients: [String]?
+    public let bccRecepients: [String]?
+    public let attachments: [Attachment]?
 
-    init(subject: String? = nil, message: String? = nil, isHTML: Bool = false, toRecepients: [String]? = nil, ccRecepients: [String]? = nil, bccRecepients: [String]? = nil, attachments: [Attachment]? = nil) {
+    public init(subject: String? = nil, message: String? = nil, isHTML: Bool = false, toRecepients: [String]? = nil, ccRecepients: [String]? = nil, bccRecepients: [String]? = nil, attachments: [Attachment]? = nil) {
         self.subject = subject
         self.message = message
         self.isHTML = isHTML
@@ -403,11 +403,11 @@ public struct MailShareParameters {
 
 public struct PasteboardShareParameters {
 
-    let string: String?
-    let image: UIImage?
-    let url: URL?
+    public let string: String?
+    public let image: UIImage?
+    public let url: URL?
 
-    init(string: String? = nil, image: UIImage? = nil, url: URL? = nil) {
+    public init(string: String? = nil, image: UIImage? = nil, url: URL? = nil) {
         self.string = string
         self.image = image
         self.url = url
@@ -417,9 +417,9 @@ public struct PasteboardShareParameters {
 
 public struct PhotosShareParameters {
 
-    let image: UIImage
+    public let image: UIImage
 
-    init(image: UIImage) {
+    public init(image: UIImage) {
         self.image = image
     }
 
@@ -427,9 +427,9 @@ public struct PhotosShareParameters {
 
 public struct Attachment {
 
-    let attachmentType: AttachmentType
-    let filename: String
-    let data: Data
+    public let attachmentType: AttachmentType
+    public let filename: String
+    public let data: Data
 
     public init(attachmentType: AttachmentType, filename: String, data: Data) {
         self.attachmentType = attachmentType
