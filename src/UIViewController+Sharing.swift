@@ -21,44 +21,44 @@ public typealias SharingCompletedEvent = (SharingType) -> Void
 
 public enum ShareDestination {
 
-    case text(parameters: TextShareParameters)
-    case email(parameters: MailShareParameters)
-    case twitter(parameters: SocialShareParameters)
-    case facebook(parameters: SocialShareParameters)
-    case sinaWeibo(parameters: SocialShareParameters)
-    case tencentWeibo(parameters: SocialShareParameters)
-    case pasteboard(parameters: PasteboardShareParameters)
-    case photos(parameters: PhotosShareParameters)
-    case activityController(parameters: ActivityShareParameters)
+    case text
+    case email
+    case twitter
+    case facebook
+    case sinaWeibo
+    case tencentWeibo
+    case pasteboard
+    case photos
+    case activityController
 
     public var canShare: Bool {
         switch self {
 
-        case .text(_):
+        case .text:
             return MFMessageComposeViewController.canSendText()
 
-        case .email(_):
+        case .email:
             return MFMailComposeViewController.canSendMail()
 
-        case .twitter(_):
+        case .twitter:
             return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
 
-        case .facebook(_):
+        case .facebook:
             return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
 
-        case .sinaWeibo(_):
+        case .sinaWeibo:
             return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeSinaWeibo)
 
-        case .tencentWeibo(_):
+        case .tencentWeibo:
             return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTencentWeibo)
 
-        case .pasteboard(_):
+        case .pasteboard:
             return true
 
-        case .photos(_):
-            return PHPhotoLibrary.authorizationStatus() == .authorized || PHPhotoLibrary.authorizationStatus() == .notDetermined
+        case .photos:
+            return PHPhotoLibrary.authorizationStatus() == .authorized
 
-        case .activityController(_):
+        case .activityController:
             return true
 
         }
@@ -67,31 +67,31 @@ public enum ShareDestination {
     public var name: String {
         switch self {
 
-        case .text(_):
+        case .text:
             return UIActivityType.message.rawValue
 
-        case .email(_):
+        case .email:
             return UIActivityType.mail.rawValue
 
-        case .twitter(_):
+        case .twitter:
             return SLServiceTypeTwitter
 
-        case .facebook(_):
+        case .facebook:
             return SLServiceTypeFacebook
 
-        case .sinaWeibo(_):
+        case .sinaWeibo:
             return SLServiceTypeSinaWeibo
 
-        case .tencentWeibo(_):
+        case .tencentWeibo:
             return SLServiceTypeTencentWeibo
 
-        case .pasteboard(_):
+        case .pasteboard:
             return UIActivityType.copyToPasteboard.rawValue
 
-        case .photos(_):
+        case .photos:
             return UIActivityType.saveToCameraRoll.rawValue
 
-        case .activityController(_):
+        case .activityController:
             return "com.apple.activityController"
             
         }
@@ -103,120 +103,119 @@ public enum ShareDestination {
 
     public static let cancelled = UIActivityType("com.plugin.cancelled")
 
+    public enum SocialNetwork {
+
+        case twitter
+        case facebook
+        case sinaWeibo
+        case tencentWeibo
+
+        var shareDestination: ShareDestination {
+            switch self {
+
+            case .twitter:
+                return ShareDestination.twitter
+
+            case .facebook:
+                return ShareDestination.facebook
+
+            case .sinaWeibo:
+                return ShareDestination.sinaWeibo
+                
+            case .tencentWeibo:
+                return ShareDestination.tencentWeibo
+                
+            }
+        }
+        
+    }
+
 }
+
 
 public extension UIViewController {
 
-    func share(destination: ShareDestination) {
-        if destination.canShare {
-            switch destination {
-
-            case .text(let parameters):
-                self.share(textParameters: parameters)
-
-            case .email(let parameters):
-                self.share(mailParameters: parameters)
-
-            case .twitter(let parameters):
-                self.share(socialParameters: parameters, network: destination.name)
-
-            case .facebook(let parameters):
-                self.share(socialParameters: parameters, network: destination.name)
-
-            case .sinaWeibo(let parameters):
-                self.share(socialParameters: parameters, network: destination.name)
-
-            case .tencentWeibo(let parameters):
-                self.share(socialParameters: parameters, network: destination.name)
-
-            case .pasteboard(let parameters):
-                self.share(pasteboardParmaeters: parameters)
-
-            case .photos(let parameters):
-                self.share(photosParameters: parameters)
-
-            case .activityController(let parameters):
-                self.share(activityParameters: parameters)
-
-            }
-        } else {
-            self.sharingCompleted?((success: false, sharingService: destination.activityType))
-        }
-    }
-
-}
-
-fileprivate extension UIViewController {
-
     func share(activityParameters parameters: ActivityShareParameters) {
-        let activityController = UIActivityViewController(activityItems: parameters.activityItems, applicationActivities: parameters.applicationActivites)
-        activityController.excludedActivityTypes = parameters.excludedActivityTypes
+        self.shareIfPossible(destination: ShareDestination.activityController) { 
+            let activityController = UIActivityViewController(activityItems: parameters.activityItems, applicationActivities: parameters.applicationActivites)
+            activityController.excludedActivityTypes = parameters.excludedActivityTypes
 
-        activityController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
-            parameters.completionItemsHandler?(activityType, completed, returnedItems, activityError)
+            activityController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
+                parameters.completionItemsHandler?(activityType, completed, returnedItems, activityError)
 
-            let sharingService = activityType ?? ShareDestination.cancelled
-            self.sharingCompleted?(success: (completed && activityError == nil), sharingService: sharingService)
+                let sharingService = activityType ?? ShareDestination.cancelled
+                self.sharingCompleted?(success: (completed && activityError == nil), sharingService: sharingService)
+            }
+
+            self.present(activityController, animated: true, completion: nil)
         }
-
-        self.present(activityController, animated: true, completion: nil)
     }
 
     func share(textParameters parameters: TextShareParameters) {
-        let messageController = MFMessageComposeViewController()
-        messageController.messageComposeDelegate = self
-        messageController.body = parameters.message
+        self.shareIfPossible(destination: ShareDestination.activityController) {
+            let messageController = MFMessageComposeViewController()
+            messageController.messageComposeDelegate = self
+            messageController.body = parameters.message
 
-        messageController.navigationBar.titleTextAttributes = self.sharingTitleTextAttributes
-        messageController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
+            messageController.navigationBar.titleTextAttributes = self.sharingTitleTextAttributes
+            messageController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
 
-        parameters.attachments?.forEach { attachment in
-            messageController.addAttachmentData(attachment.data, typeIdentifier: attachment.attachmentType, filename: attachment.filename)
+            parameters.attachments?.forEach { attachment in
+                messageController.addAttachmentData(attachment.data, typeIdentifier: attachment.attachmentType, filename: attachment.filename)
+            }
+
+            self.present(messageController, animated: true, completion: nil)
         }
-
-        self.present(messageController, animated: true, completion: nil)
     }
 
     func share(mailParameters parameters: MailShareParameters) {
-        let mailController = MFMailComposeViewController()
-        mailController.mailComposeDelegate = self
-        mailController.setSubject(parameters.subject ?? "")
-        mailController.setMessageBody(parameters.message ?? "", isHTML: parameters.isHTML)
-        mailController.setToRecipients(parameters.toRecepients)
-        mailController.setCcRecipients(parameters.ccRecepients)
-        mailController.setBccRecipients(parameters.bccRecepients)
+        self.shareIfPossible(destination: ShareDestination.activityController) {
+            let mailController = MFMailComposeViewController()
+            mailController.mailComposeDelegate = self
+            mailController.setSubject(parameters.subject ?? "")
+            mailController.setMessageBody(parameters.message ?? "", isHTML: parameters.isHTML)
+            mailController.setToRecipients(parameters.toRecepients)
+            mailController.setCcRecipients(parameters.ccRecepients)
+            mailController.setBccRecipients(parameters.bccRecepients)
 
-        mailController.navigationBar.titleTextAttributes = self.sharingTitleTextAttributes
-        mailController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
+            mailController.navigationBar.titleTextAttributes = self.sharingTitleTextAttributes
+            mailController.navigationBar.tintColor = self.sharingBarButtonItemTintColor
 
-        parameters.attachments?.forEach { attachment in
-            mailController.addAttachmentData(attachment.data, mimeType: attachment.attachmentType, fileName: attachment.filename)
+            parameters.attachments?.forEach { attachment in
+                mailController.addAttachmentData(attachment.data, mimeType: attachment.attachmentType, fileName: attachment.filename)
+            }
+            
+            self.present(mailController, animated: true, completion: nil)
         }
-
-        self.present(mailController, animated: true, completion: nil)
     }
 
-    func share(socialParameters parameters: SocialShareParameters, network: String) {
-        if let composeController = SLComposeViewController(forServiceType: network) {
-            composeController.setInitialText(parameters.message)
 
-            parameters.urls.flatMap { $0 }?.lazy.forEach({ composeController.add($0) })
-            parameters.images.flatMap { $0 }?.lazy.forEach({ composeController.add($0) })
+    func share(socialParameters parameters: SocialShareParameters) {
+        self.shareIfPossible(destination: ShareDestination.activityController) {
+            let destination = parameters.network.shareDestination
+            if let composeController = SLComposeViewController(forServiceType: destination.name) {
+                composeController.setInitialText(parameters.message)
 
-            composeController.completionHandler = { result in
-                let succeeded = (result == SLComposeViewControllerResult.done)
-                self.sharingCompleted?((success: succeeded, sharingService: UIActivityType(network)))
-                self.dismiss(animated: true, completion: nil)
+                parameters.urls.flatMap { $0 }?.lazy.forEach({ composeController.add($0) })
+                parameters.images.flatMap { $0 }?.lazy.forEach({ composeController.add($0) })
+
+                composeController.completionHandler = { result in
+                    let succeeded = (result == SLComposeViewControllerResult.done)
+                    self.sharingCompleted?((success: succeeded, sharingService: destination.activityType))
+                    self.dismiss(animated: true, completion: nil)
+                }
+
+                self.present(composeController, animated: true, completion: nil)
             }
-
-            self.present(composeController, animated: true, completion: nil)
         }
     }
 
     func share(pasteboardParmaeters parameters: PasteboardShareParameters) {
-        UIPasteboard.general.url = parameters.url
-        UIPasteboard.general.image = parameters.image
-        UIPasteboard.general.string = parameters.string
+        self.shareIfPossible(destination: ShareDestination.activityController) {
+            UIPasteboard.general.url = parameters.url
+            UIPasteboard.general.image = parameters.image
+            UIPasteboard.general.string = parameters.string
+        }
     }
 
     func share(photosParameters parameters: PhotosShareParameters) {
@@ -225,8 +224,7 @@ fileprivate extension UIViewController {
             changeRequest.creationDate = Date()
         }) { success, error in
             let saved = (error == nil && success)
-            let parameters = PhotosShareParameters(image: parameters.image)
-            let activity = ShareDestination.photos(parameters: parameters).activityType
+            let activity = ShareDestination.photos.activityType
             self.sharingCompleted?(success: saved, sharingService: activity)
         }
     }
@@ -239,8 +237,7 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
         controller.dismiss(animated: true, completion: nil)
 
         let success = (result == MFMailComposeResult.sent || result == MFMailComposeResult.saved)
-        let emailActivity = ShareDestination.email(parameters: MailShareParameters()).activityType
-        self.sharingCompleted?((success: success, sharingService: emailActivity))
+        self.sharingCompleted?((success: success, sharingService: ShareDestination.email.activityType))
     }
 
 }
@@ -251,10 +248,22 @@ extension UIViewController: MFMessageComposeViewControllerDelegate {
         controller.dismiss(animated: true, completion: nil)
 
         let success = (result == MessageComposeResult.sent)
-        let textActivity = ShareDestination.text(parameters: TextShareParameters()).activityType
-        self.sharingCompleted?((success: success, sharingService: textActivity))
+        self.sharingCompleted?((success: success, sharingService: ShareDestination.text.activityType))
     }
 
+}
+
+
+private extension UIViewController {
+
+    func shareIfPossible(destination: ShareDestination, canShareAction: () -> Void) {
+        if destination.canShare {
+            canShareAction()
+        } else {
+            self.sharingCompleted?((success: false, sharingService: destination.activityType))
+        }
+    }
+    
 }
 
 
@@ -262,7 +271,7 @@ extension UIViewController: MFMessageComposeViewControllerDelegate {
 
 public extension UIViewController {
 
-    private struct AssociatedObjectKeys {
+    private enum AssociatedObjectKeys {
         static var sharingBarButtonItemTintColor = "UIViewController.sharingBarButtonItemTintColor"
         static var sharingBarTintColor = "UIViewController.sharingBarTintColor"
         static var sharingTitleTextAttributes = "UIViewController.sharingTitleTextAttributes"
@@ -305,11 +314,13 @@ public extension UIViewController {
 
 public struct SocialShareParameters {
 
+    let network: ShareDestination.SocialNetwork
     let message: String?
     let images: [UIImage]?
     let urls: [URL]?
 
-    init(message: String? = nil, images: [UIImage]? = nil, urls: [URL]? = nil) {
+    init(network: ShareDestination.SocialNetwork, message: String? = nil, images: [UIImage]? = nil, urls: [URL]? = nil) {
+        self.network = network
         self.message = message
         self.images = images
         self.urls = urls
@@ -402,18 +413,18 @@ public struct MessageAttachment {
         self.filename = filename
         self.data = data
     }
-    
+
 }
 
 
 // MARK: Boxing so we can store the sharingCompleted closure on UIViewController
 
 private class SharingCompletedEventBox {
-    
+
     var event: SharingCompletedEvent?
-    
+
     init(event: SharingCompletedEvent?) {
         self.event = event
     }
-    
+
 }
