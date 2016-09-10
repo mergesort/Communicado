@@ -1,57 +1,78 @@
-Communicado
-========================
+# Communicado
 
-The easiest way to share from your app to anywhere, because you've got so much to say! This library is a successor to [`UIViewController+Sharing`](https://github.com/mergesort/UIViewController-Sharing).
+#### Are you tired of rewriting the same sharing code over and over again?
 
-`Communicado ` supports sharing text, URLs, images, and attachments, all through Apple's frameworks. No more implementing your own `MFMailComposeViewController` delegate, or `SLServiceBlahBlahBlah`.
+![](gifs/cartman.gif)
 
-> Enough talk though, show me code...
+#### So am I!
 
-Said some impatient brat.
+![](gifs/homer.gif)
 
-    if (self.canShareViaFacebook()) {
-        self.shareViaFacebookWithMessage("I've got so much to say!", images: [ UIImage(named:"sunglasses.png") ], URLs: [ myCoolURL ])
-    } else {
-        ¯\_(ツ)_/¯ // Do whatever the heck you want
-    }
+#### That's why I wrote Communicado!
 
-It's as simple as that.
+Communicado is the simplest way to share using iOS built in methods. If you use this correctly, you'll end up with a whole lot more time to sleep.
 
-You can check out all the sharing choices are below.
+![](gifs/kitty.gif)
 
-```
-func shareViaActivityController(activityItems: [AnyObject], excludedActivityTypes: [String]?, applicationActivites: [UIActivity]?, completionItemsHandler:((activityType: String?, completed: Bool, returnedItems: [AnyObject]?, activityError: NSError?) -> ())?)
+#### Let's show you how it's done.
 
-func shareViaTextWithMessage(message: String?, attachments: [AnyObject]?)
+The first thing to know is the available methods for sharing.
 
-func shareViaTextMessage(message: String?, attachments:[MessageAttachment]?)
+```swift
+public enum ShareDestination {
 
-func shareViaEmailWithSubject(subject: String?, message: String?, isHTML: Bool, toRecepients:[String]?, ccRecepients:[String]?, bccRecepients:[String]?, attachments:[MessageAttachment]?)
+    case text(parameters: TextShareParameters)
+    case email(parameters: MailShareParameters)
+    case twitter(parameters: SocialShareParameters)
+    case facebook(parameters: SocialShareParameters)
+    case sinaWeibo(parameters: SocialShareParameters)
+    case tencentWeibo(parameters: SocialShareParameters)
+    case pasteboard(parameters: PasteboardShareParameters)
+    case photos(parameters: PhotosShareParameters)
+    case activityController(parameters: ActivityShareParameters)
 
-func shareViaFacebook(message: String?, images: [UIImage]?, URLs: [NSURL]?)
-
-func shareViaTwitter(message: String?, images: [UIImage]?, URLs: [NSURL]?)
-
-func shareViaSinaWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?)
-
-func shareViaTencentWeiboWithMessage(message: String?, images: [UIImage]?, URLs: [NSURL]?)
-
-func shareViaCopyString(string: String?)
-
-func shareViaCopyURL(URL: NSURL?)
+}
 ```
 
-Customizing the navigation bar for `MFMailComposeViewController` and `MFMessageComposeViewController` is such a pain... But not any more. Just set a couple properties and when you share, it will implement your fun look and feel. And when you're done, no harm no foul, everything gets reset.
+Each sharing destination takes in parameters. Let's try a simple example.
 
-```
-var sharingBarButtonItemTintColor: UIColor?
-var sharingTitleTextAttributes: [NSObject : AnyObject]?
-```
-
-Callbacks when your sharing completes are great, for example if you'd like to track analytics on where people are sharing, if into creepy things like that.
-
-```
-var sharingCompleted: ((success: Bool, sharingService: String) -> Void)?
+```swift
+let attachment = MessageAttachment(attachmentType: "image/png", filename: "heart.png", data: heartImageData)
+let textParameters = TextShareParameters(message: "I love my users.", attachments: [ attachment ])
+let textDestination = ShareDestination.text(parameters: textParameters)
 ```
 
-I've run out of words, so go and use the library!
+Now let's call the **ONLY** method that's even available to you.
+
+```swift
+self.share(destination: textDestination)
+```
+
+And we're done! If everything went well, you can send a text with that wonderful heart image to all your favorite users.
+
+Now all you can try this for all the kinds of sharing that you'd like to use in your app!
+
+![](gifs/yay.gif)
+
+## Installation
+You can use CocoaPods to install Anchorman by adding it to your Podfile:
+
+```swift
+platform :ios, '9.0'
+pod 'Communicado'
+```
+
+Or install it manually by downloading Anchorman.swift and dropping it in your project.
+
+
+## About me
+
+Hi, I'm [Joe](http://fabisevi.ch) everywhere on the web, but especially on [Twitter](https://twitter.com/mergesort).
+
+## License
+
+See the [license](LICENSE) for more information about how you can use Anchorman. I promise it's not GPL, because I am not "that guy".
+
+## The end?
+
+Yes, this is the end. Hopefully Communicado makes your life easier. It probably won't help you pay your rent, but it might make it easier to share in your app.
