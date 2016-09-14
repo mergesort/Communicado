@@ -1,13 +1,11 @@
 # Communicado
 
-## Are you tired of rewriting the same sharing code over and over again?
+#### Are you tired of rewriting the same sharing code over and over again?
 
 ![](gifs/cartman.gif)
-
-#### So am I!
+#### Me too!
 
 ![](gifs/homer.gif)
-
 #### That's why I wrote Communicado!
 
 ---
@@ -15,6 +13,8 @@
 Communicado is the simplest way to share using iOS built in methods. If you use this correctly, you'll end up with a whole lot more time to sleep.
 
 ![](gifs/kitty.gif)
+
+---
 
 #### Let's show you how it's done.
 
