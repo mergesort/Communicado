@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'Communicado'
-  spec.version      = '2.0'
+  spec.version      = '2.0.1'
   spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.homepage     = 'https://github.com/mergesort/Communicado'
   spec.authors      =  { 'Joe Fabisevich' => 'github@fabisevi.ch' }
