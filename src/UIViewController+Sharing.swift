@@ -353,12 +353,12 @@ public struct SocialShareParameters {
 
 public struct ActivityShareParameters {
 
-    public let activityItems: [AnyObject]
+    public let activityItems: [Any]
     public let excludedActivityTypes: [UIActivityType]?
     public let applicationActivites: [UIActivity]?
     public let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
 
-    public init(activityItems: [AnyObject], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
+    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
         self.activityItems = activityItems
         self.excludedActivityTypes = excludedActivityTypes
         self.applicationActivites = applicationActivites
