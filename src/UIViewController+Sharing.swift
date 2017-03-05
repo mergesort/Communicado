@@ -227,7 +227,7 @@ public extension UIViewController {
     func share(_ parameters: PasteboardShareParameters) {
         self.shareIfPossible(destination: ShareDestination.pasteboard) {
             if let string = parameters.string {
-                UIPasteboard.general.string = parameters.string
+                UIPasteboard.general.string = string
             }
             
             if let url = parameters.url {
