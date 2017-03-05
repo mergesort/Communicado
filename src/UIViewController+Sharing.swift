@@ -157,7 +157,7 @@ public extension UIViewController {
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to Messages.
     func share(_ parameters: TextShareParameters) {
-        self.shareIfPossible(destination: ShareDestination.activityController) {
+        self.shareIfPossible(destination: ShareDestination.text) {
             let messageController = MFMessageComposeViewController()
             messageController.messageComposeDelegate = self
             messageController.body = parameters.message
@@ -177,7 +177,7 @@ public extension UIViewController {
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to Mail.
     func share(_ parameters: MailShareParameters) {
-        self.shareIfPossible(destination: ShareDestination.activityController) {
+        self.shareIfPossible(destination: ShareDestination.email) {
             let mailController = MFMailComposeViewController()
             mailController.mailComposeDelegate = self
             mailController.setSubject(parameters.subject ?? "")
@@ -202,7 +202,7 @@ public extension UIViewController {
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to a social network.
     func share(_ parameters: SocialShareParameters) {
-        self.shareIfPossible(destination: ShareDestination.activityController) {
+        self.shareIfPossible(destination: parameters.network.shareDestination) {
             let destination = parameters.network.shareDestination
             if let composeController = SLComposeViewController(forServiceType: destination.name) {
                 composeController.setInitialText(parameters.message)
@@ -225,10 +225,18 @@ public extension UIViewController {
     ///
     /// - parameter parameters: Parameters that are applicable for sharing to the pasteboard.
     func share(_ parameters: PasteboardShareParameters) {
-        self.shareIfPossible(destination: ShareDestination.activityController) {
-            UIPasteboard.general.url = parameters.url
-            UIPasteboard.general.image = parameters.image
-            UIPasteboard.general.string = parameters.string
+        self.shareIfPossible(destination: ShareDestination.pasteboard) {
+            if let string = parameters.string {
+                UIPasteboard.general.string = parameters.string
+            }
+            
+            if let url = parameters.url {
+                UIPasteboard.general.url = url
+            }
+            
+            if let image = parameters.image {
+                UIPasteboard.general.image = image
+            }
         }
     }
 
