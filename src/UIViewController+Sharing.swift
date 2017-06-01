@@ -149,7 +149,17 @@ public extension UIViewController {
                 self.sharingCompleted?(success: (completed && activityError == nil), sharingService: sharingService)
             }
 
-            self.present(activityController, animated: true, completion: nil)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                activityController.modalPresentationStyle = .popover
+                self.present(activityController, animated: true, completion: nil)
+                if let controller = activityController.popoverPresentationController {
+                    controller.permittedArrowDirections = .any
+                    controller.sourceView = parameters.sourceView
+                }
+            } else {
+                self.present(activityController, animated: true, completion: nil)
+            }
+
         }
     }
 
