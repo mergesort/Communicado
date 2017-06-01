@@ -375,12 +375,14 @@ public struct ActivityShareParameters {
     public let excludedActivityTypes: [UIActivityType]?
     public let applicationActivites: [UIActivity]?
     public let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
+    public let sourceView: UIView?
 
-    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
+    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil, sourceView: UIView? = nil) {
         self.activityItems = activityItems
         self.excludedActivityTypes = excludedActivityTypes
         self.applicationActivites = applicationActivites
         self.completionItemsHandler = completionItemsHandler
+        self.sourceView = sourceView
     }
 
 }
