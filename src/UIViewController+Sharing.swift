@@ -149,7 +149,17 @@ public extension UIViewController {
                 self.sharingCompleted?(success: (completed && activityError == nil), sharingService: sharingService)
             }
 
-            self.present(activityController, animated: true, completion: nil)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                activityController.modalPresentationStyle = .popover
+                self.present(activityController, animated: true, completion: nil)
+                if let controller = activityController.popoverPresentationController {
+                    controller.permittedArrowDirections = .any
+                    controller.sourceView = parameters.sourceView
+                }
+            } else {
+                self.present(activityController, animated: true, completion: nil)
+            }
+
         }
     }
 
@@ -365,12 +375,14 @@ public struct ActivityShareParameters {
     public let excludedActivityTypes: [UIActivityType]?
     public let applicationActivites: [UIActivity]?
     public let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
+    public let sourceView: UIView?
 
-    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil) {
+    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil, sourceView: UIView? = nil) {
         self.activityItems = activityItems
         self.excludedActivityTypes = excludedActivityTypes
         self.applicationActivites = applicationActivites
         self.completionItemsHandler = completionItemsHandler
+        self.sourceView = sourceView
     }
 
 }
