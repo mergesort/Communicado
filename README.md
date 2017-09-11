@@ -1,58 +1,64 @@
 # Communicado
 
+### Sharing on iOS made easy.
+
+[![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=59b695f696d4600001f5144a&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/59b695f696d4600001f5144a/build/latest?branch=master)
+[![Pod Version](https://img.shields.io/badge/Pod-2.1-6193DF.svg)](https://cocoapods.org/)
+![Swift Version](https://img.shields.io/badge/Swift-3.0%20|%203.1%20|%203.2%20|%204.0-brightgreen.svg)
+![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg) 
+![Plaform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg)
+
+---
+
 #### Are you tired of rewriting the same sharing code over and over again?
 
-![](gifs/cartman.gif)
+![](Images/cartman.gif)
 #### Me too!
 
-![](gifs/homer.gif)
-#### That's why I wrote Communicado!
+![](Images/homer.gif)
+#### That's why I wrote Communicado! Let's show you how it's done.
 
+Sharing
 ---
 
-Communicado is the simplest way to share using iOS built in methods. If you use this correctly, you'll end up with a whole lot more time to sleep.
+The first thing to know is can share from any `UIViewController` that conforms to `SharingCapableViewController`. Once you add this, you will get a `share` function on `UIViewController` which supports many built in sharing types.
 
-![](gifs/kitty.gif)
+You can share to:
 
----
-
-#### Let's show you how it's done.
-
-The first thing to know is the available methods for sharing.
-
-```swift
-public enum ShareDestination {
-
-    case text
-    case email
-    case twitter
-    case facebook
-    case sinaWeibo
-    case tencentWeibo
-    case pasteboard
-    case photos
-    case activityController
-
-}
-```
+- Messages
+- Mail
+- Pasteboard
+- Photos
+- UIActivityController
+- Twitter (iOS 10.3 and lower)
+- Facebook (iOS 10.3 and lower)
+- Sina Weibo (iOS 10.3 and lower)
+- Tencent Weibo (iOS 10.3 and lower)
 
 Each sharing destination takes in parameters. Let's try a simple example.
 
 ```swift
 let heartImageData = UIImagePNGRepresentation(myHeartImage)
 let attachment = Attachment(attachmentType: AttachmentType.png, filename: "heart.png", data: heartImageData)
-let textParameters = TextShareParameters(message: "I love my users.", attachments: [ attachment ])
+let messageParameters = MessageShareParameters(message: "I ❤️ Communicado", attachments: [ attachment ])
 ```
 
 Now let's call the **ONLY** method that's even available to you.
 
 ```swift
-self.share(textParameters)
+self.share(messageParameters)
 ```
 
-And we're done! If everything went well, you can send a text with that wonderful heart image to all your favorite users.
+And when you're done, you'll get one unified callback with the information of how the share attempt went.
 
-**You can do the same for the other sharing types as well.**
+```swift
+self.sharingCompleted = { shareResult in
+    print("Was successful? \(shareResult.success)")
+    print("Sharing service: \(shareResult.sharingService)")
+}
+```
+
+You can do the same for the other sharing destinations as well.
 
 ```swift
 self.share(MailShareParameters)
@@ -62,21 +68,54 @@ self.share(PhotosShareParameters)
 self.share(PasteboardShareParameters)
 ```
 
-Now all you can try this for all the kinds of sharing that you'd like to use in your app!
+Styling
+--- 
 
-![](gifs/yay.gif)
+You can also use Communicado to style the `MFMailComposeViewController` and `MFMessageComposeViewController` with just a few lines of code. This works around all of the hoops Apple makes you jump through to style the built in sharing controllers.
 
-## Installation
-You can use [CocoaPods](http://cocoapods.org/) to install `Communicado` by adding it to your `Podfile`:
+All you have to do is:
 
 ```swift
+self.sharingTitleTextAttributes = [
+    NSAttributedStringKey.foregroundColor : UIColor.white,
+    NSAttributedStringKey.font : UIFont.systemFont(ofSize: 21.0)
+]
+
+self.sharingBarButtonItemAttributes = [
+    NSAttributedStringKey.foregroundColor : UIColor.purple,
+    NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16.0)
+]
+
+self.sharingBackgroundColor = UIColor.blue
+```
+
+And get something that looks like this: 
+
+![](Images/styled_messages.png)
+
+Beautiful, isn't it?
+
+![](Images/yay.gif)
+
+## Requirements
+
+- iOS 9.0+
+- Xcode 8.0+
+
+## Installation
+For **Swift 3** support, use version **2.0.2**. <br>
+For **Swift 4** support, you can use version **3.0** or above.
+
+You can use [CocoaPods](http://cocoapods.org/) to install `Communicado` by adding it to your `Podfile`:
+
+```ruby
 platform :ios, '9.0'
 use_frameworks!
 
 pod 'Communicado'
 ```
 
-Or install it manually by downloading `UIViewController+Sharing.swift` and dropping it in your project.
+Or install it manually by downloading all the files in the `Source` folder and dropping them into your project.
 
 ## About me
 
