@@ -66,7 +66,7 @@ public struct MailShareParameters: ShareParameters {
     
 }
 
-/// Parameters which are used when saving a `PasteaboardShareParameters.Value` to the user's pasteboard.
+/// Parameters which are used when saving a `PasteboardShareParameters.Value` to the user's pasteboard.
 public struct PasteboardShareParameters: ShareParameters {
 
     public enum Value {

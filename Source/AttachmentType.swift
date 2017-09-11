@@ -19,7 +19,7 @@ public enum AttachmentType {
     case tiff
     case zip
     
-    /// Any identifier which is not one of the common ones encapsulated in this `AttachmentType`ß.
+    /// Any identifier which is not one of the common ones encapsulated in this `AttachmentType`s.
     case custom(value: String)
     
     var identifier: String {
