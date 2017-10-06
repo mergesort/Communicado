@@ -1,5 +1,9 @@
 # Change Log
 
+# 3.0.1 (2017-10-06)
+
+- Adding public initializers for `ShareDestination`s.
+
 # 3.0 (2017-09-11)
 
 - The underlying framework is completely rewritten. If you find any bugs, please report them. 🐛
