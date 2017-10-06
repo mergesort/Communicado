@@ -35,6 +35,8 @@ public struct MessagesShareDestination: ShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(MessagesShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to Mail.
@@ -49,6 +51,8 @@ public struct MailShareDestination: ShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(MailShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to the camera roll.
@@ -63,6 +67,8 @@ public struct PhotosShareDestination: ShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(PhotosShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to the pasteboard.
@@ -77,6 +83,8 @@ public struct PasteboardShareDestination: ShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(PasteboardShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to the `UIActivityViewController`.
@@ -91,6 +99,8 @@ public struct ActivityControllerShareDestination: ShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(ActivityControllerShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to Twitter.
@@ -108,6 +118,8 @@ public struct TwitterShareDestination: SocialShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(TwitterShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to Facebook.
@@ -125,6 +137,8 @@ public struct FacebookShareDestination: SocialShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(FacebookShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to Tencent Weibo.
@@ -142,6 +156,8 @@ public struct TencentWeiboShareDestination: SocialShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(TencentWeiboShareDestination.name)
     }
+
+    public init() {}
 }
 
 /// A ShareDestination for sharing to Sina Weibo.
@@ -159,6 +175,8 @@ public struct SinaWeiboShareDestination: SocialShareDestination {
     public var activityType: UIActivityType {
         return UIActivityType(SinaWeiboShareDestination.name)
     }
+
+    public init() {}
 }
 
 public extension UIActivityType {
