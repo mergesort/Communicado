@@ -11,12 +11,12 @@ public struct ActivityShareParameters: ShareParameters {
     let shareDestination: ShareDestination = ActivityControllerShareDestination()
 
     public let activityItems: [Any]
-    public let excludedActivityTypes: [UIActivityType]?
+    public let excludedActivityTypes: [UIActivity.ActivityType]?
     public let applicationActivites: [UIActivity]?
-    public let completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler?
+    public let completionItemsHandler: UIActivityViewController.CompletionWithItemsHandler?
     public let sourceView: UIView?
     
-    public init(activityItems: [Any], excludedActivityTypes: [UIActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewControllerCompletionWithItemsHandler? = nil, sourceView: UIView? = nil) {
+    public init(activityItems: [Any], excludedActivityTypes: [UIActivity.ActivityType]? = nil, applicationActivites: [UIActivity]? = nil, completionItemsHandler: UIActivityViewController.CompletionWithItemsHandler? = nil, sourceView: UIView? = nil) {
         self.activityItems = activityItems
         self.excludedActivityTypes = excludedActivityTypes
         self.applicationActivites = applicationActivites

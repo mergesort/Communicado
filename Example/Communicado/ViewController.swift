@@ -24,13 +24,13 @@ private extension ViewController {
         self.title = "Sharing Example"
         
         self.sharingTitleTextAttributes = [
-            NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0, green: 0.2156862745, blue: 0.5019607843, alpha: 1),
-            NSAttributedStringKey.font : UIFont.systemFont(ofSize: 21.0)
+            .foregroundColor : #colorLiteral(red: 0, green: 0.2156862745, blue: 0.5019607843, alpha: 1),
+            .font : UIFont.systemFont(ofSize: 21.0)
         ]
 
         self.sharingBarButtonItemAttributes = [
-            NSAttributedStringKey.foregroundColor : #colorLiteral(red: 0.9254901961, green: 0.9411764706, blue: 0.9450980392, alpha: 1),
-            NSAttributedStringKey.font : UIFont.systemFont(ofSize: 16.0)
+            .foregroundColor : #colorLiteral(red: 0.9254901961, green: 0.9411764706, blue: 0.9450980392, alpha: 1),
+            .font : UIFont.systemFont(ofSize: 16.0)
         ]
 
         self.sharingBackgroundColor = #colorLiteral(red: 0.09803921569, green: 0.7098039216, blue: 0.9960784314, alpha: 1)
@@ -70,7 +70,7 @@ private extension ViewController {
         let attachments: [Attachment]?
         
         let blankImage = UIImage()
-        if let imageData = UIImagePNGRepresentation(blankImage) {
+        if let imageData = blankImage.pngData() {
             attachments = [Attachment(attachmentType: .png, filename: "blankImage.png", data: imageData)]
         } else {
             attachments = nil
