@@ -13,7 +13,7 @@ public protocol ShareDestination {
     var canShare: Bool { get }
     
     /// A `UIActivityType` of the destination that we are sharing to.
-    var activityType: UIActivityType { get }
+    var activityType: UIActivity.ActivityType { get }
 }
 
 /// A type that defines the values needed for a social network backed destination to share to.
@@ -26,14 +26,14 @@ public protocol SocialShareDestination: ShareDestination {
 /// A ShareDestination for sharing to Messages.
 public struct MessagesShareDestination: ShareDestination {
     
-    public static let name = UIActivityType.message.rawValue
+    public static let name = UIActivity.ActivityType.message.rawValue
 
     public var canShare: Bool {
         return MFMessageComposeViewController.canSendText()
     }
 
-    public var activityType: UIActivityType {
-        return UIActivityType(MessagesShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(MessagesShareDestination.name)
     }
 
     public init() {}
@@ -42,14 +42,14 @@ public struct MessagesShareDestination: ShareDestination {
 /// A ShareDestination for sharing to Mail.
 public struct MailShareDestination: ShareDestination {
     
-    public static let name = UIActivityType.mail.rawValue
+    public static let name = UIActivity.ActivityType.mail.rawValue
     
     public var canShare: Bool {
         return MFMailComposeViewController.canSendMail()
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(MailShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(MailShareDestination.name)
     }
 
     public init() {}
@@ -58,14 +58,14 @@ public struct MailShareDestination: ShareDestination {
 /// A ShareDestination for sharing to the camera roll.
 public struct PhotosShareDestination: ShareDestination {
     
-    public static let name = UIActivityType.saveToCameraRoll.rawValue
+    public static let name = UIActivity.ActivityType.saveToCameraRoll.rawValue
 
     public var canShare: Bool {
         return PHPhotoLibrary.authorizationStatus() == .authorized
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(PhotosShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(PhotosShareDestination.name)
     }
 
     public init() {}
@@ -74,14 +74,14 @@ public struct PhotosShareDestination: ShareDestination {
 /// A ShareDestination for sharing to the pasteboard.
 public struct PasteboardShareDestination: ShareDestination {
 
-    public static let name = UIActivityType.copyToPasteboard.rawValue
+    public static let name = UIActivity.ActivityType.copyToPasteboard.rawValue
 
     public var canShare: Bool {
         return true
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(PasteboardShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(PasteboardShareDestination.name)
     }
 
     public init() {}
@@ -96,8 +96,8 @@ public struct ActivityControllerShareDestination: ShareDestination {
         return true
     }
  
-    public var activityType: UIActivityType {
-        return UIActivityType(ActivityControllerShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(ActivityControllerShareDestination.name)
     }
 
     public init() {}
@@ -115,8 +115,8 @@ public struct TwitterShareDestination: SocialShareDestination {
         return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTwitter)
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(TwitterShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(TwitterShareDestination.name)
     }
 
     public init() {}
@@ -128,14 +128,14 @@ public struct TwitterShareDestination: SocialShareDestination {
 public struct FacebookShareDestination: SocialShareDestination {
     
     public static let name = SLServiceTypeFacebook
-    public let name = SLServiceTypeTwitter
+    public let name = SLServiceTypeFacebook
     
     public var canShare: Bool {
         return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeFacebook)
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(FacebookShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(FacebookShareDestination.name)
     }
 
     public init() {}
@@ -153,8 +153,8 @@ public struct TencentWeiboShareDestination: SocialShareDestination {
         return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeTencentWeibo)
     }
     
-    public var activityType: UIActivityType {
-        return UIActivityType(TencentWeiboShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(TencentWeiboShareDestination.name)
     }
 
     public init() {}
@@ -172,16 +172,16 @@ public struct SinaWeiboShareDestination: SocialShareDestination {
         return SLComposeViewController.isAvailable(forServiceType: SLServiceTypeSinaWeibo)
     }
  
-    public var activityType: UIActivityType {
-        return UIActivityType(SinaWeiboShareDestination.name)
+    public var activityType: UIActivity.ActivityType {
+        return UIActivity.ActivityType(SinaWeiboShareDestination.name)
     }
 
     public init() {}
 }
 
-public extension UIActivityType {
+public extension UIActivity.ActivityType {
     
     /// A `UIActivityType` which indicates that a share activity was cancelled by the user.
-    public static let cancelled = UIActivityType("com.plugin.cancelled")
+    public static let cancelled = UIActivity.ActivityType("com.plugin.cancelled")
 
 }

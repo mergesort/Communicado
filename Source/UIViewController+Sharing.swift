@@ -8,7 +8,7 @@ import ObjectiveC.runtime
 /// A value returned for when sharing events occur.
 /// - success: Whether or not the share was successful or failed.
 /// - sharingService: A `UIActivityType` for which specific service was attempting to be shared.
-public typealias ShareResult = (success: Bool, sharingService: UIActivityType)
+public typealias ShareResult = (success: Bool, sharingService: UIActivity.ActivityType)
 
 /// A unified completion handler after a share event occurs.
 public typealias SharingCompletedEvent = (ShareResult) -> Void
@@ -29,7 +29,7 @@ public extension SharingCapableViewController where Self: UIViewController {
             activityController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
                 parameters.completionItemsHandler?(activityType, completed, returnedItems, activityError)
 
-                let sharingService = activityType ?? UIActivityType.cancelled
+                let sharingService = activityType ?? UIActivity.ActivityType.cancelled
                 self.sharingCompleted?((success: (completed && activityError == nil), sharingService: sharingService))
             }
 
@@ -167,7 +167,7 @@ extension UIViewController: MFMailComposeViewControllerDelegate {
     public func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         // Reset the UIAppearance styles to what they were before we started
         UINavigationBar.appearance().setBackgroundImage(self.temporarySharingBackgroundImage, for: UIBarMetrics.default)
-        if let temporarySharingBarButtonItemAttributes = self.temporarySharingBarButtonItemAttributes as? [NSAttributedStringKey : Any] {
+        if let temporarySharingBarButtonItemAttributes = self.temporarySharingBarButtonItemAttributes as? [NSAttributedString.Key : Any] {
             UIBarButtonItem.appearance().setTitleTextAttributes(temporarySharingBarButtonItemAttributes, for: .normal)
         }
 
@@ -188,7 +188,7 @@ extension UIViewController: MFMessageComposeViewControllerDelegate {
     public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         // Reset the UIAppearance styles to what they were before we started
         UINavigationBar.appearance().setBackgroundImage(self.temporarySharingBackgroundImage, for: UIBarMetrics.default)
-        if let temporarySharingBarButtonItemAttributes = self.temporarySharingBarButtonItemAttributes as? [NSAttributedStringKey : Any] {
+        if let temporarySharingBarButtonItemAttributes = self.temporarySharingBarButtonItemAttributes as? [NSAttributedString.Key : Any] {
             UIBarButtonItem.appearance().setTitleTextAttributes(temporarySharingBarButtonItemAttributes, for: .normal)
         }
 
@@ -246,18 +246,18 @@ public extension UIViewController {
 
     /// A property for configuring the `titleTextAttributes` on `MFMailComposeViewController`.
     /// Unfortunately this does not work on `MFMessageComposeViewController`.
-    public var sharingTitleTextAttributes: [ NSAttributedStringKey : Any ]? {
+    public var sharingTitleTextAttributes: [ NSAttributedString.Key : Any ]? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes) as? [ NSAttributedStringKey : Any ]
+            return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes) as? [ NSAttributedString.Key : Any ]
         } set {
             objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
 
     /// A property for configuring the `barButtonItemAttributes` on `MFMailComposeViewController` or `MFMessageComposeViewController`.
-    public var sharingBarButtonItemAttributes: [ NSAttributedStringKey : Any ]? {
+    public var sharingBarButtonItemAttributes: [ NSAttributedString.Key : Any ]? {
         get {
-            return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemAttributes) as? [ NSAttributedStringKey : Any ]
+            return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemAttributes) as? [ NSAttributedString.Key : Any ]
         } set {
             objc_setAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemAttributes, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
