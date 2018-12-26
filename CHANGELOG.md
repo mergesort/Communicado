@@ -1,5 +1,9 @@
 # Change Log
 
+# 3.1 (2018-12-26)
+
+- Adding Swift 4.2 support.
+
 # 3.0.1 (2017-10-06)
 
 - Adding public initializers for `ShareDestination`s.
