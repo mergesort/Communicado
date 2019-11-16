@@ -182,6 +182,6 @@ public struct SinaWeiboShareDestination: SocialShareDestination {
 public extension UIActivity.ActivityType {
     
     /// A `UIActivityType` which indicates that a share activity was cancelled by the user.
-    public static let cancelled = UIActivity.ActivityType("com.plugin.cancelled")
+    static let cancelled = UIActivity.ActivityType("com.plugin.cancelled")
 
 }

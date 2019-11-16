@@ -236,7 +236,7 @@ public extension UIViewController {
     }
 
     /// A property for configuring the `backgroundColor` on `MFMailComposeViewController` or `MFMessageComposeViewController`.
-    public var sharingBackgroundColor: UIColor? {
+    var sharingBackgroundColor: UIColor? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBackgroundColor) as? UIColor
         } set {
@@ -246,7 +246,7 @@ public extension UIViewController {
 
     /// A property for configuring the `titleTextAttributes` on `MFMailComposeViewController`.
     /// Unfortunately this does not work on `MFMessageComposeViewController`.
-    public var sharingTitleTextAttributes: [ NSAttributedString.Key : Any ]? {
+    var sharingTitleTextAttributes: [ NSAttributedString.Key : Any ]? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingTitleTextAttributes) as? [ NSAttributedString.Key : Any ]
         } set {
@@ -255,7 +255,7 @@ public extension UIViewController {
     }
 
     /// A property for configuring the `barButtonItemAttributes` on `MFMailComposeViewController` or `MFMessageComposeViewController`.
-    public var sharingBarButtonItemAttributes: [ NSAttributedString.Key : Any ]? {
+    var sharingBarButtonItemAttributes: [ NSAttributedString.Key : Any ]? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingBarButtonItemAttributes) as? [ NSAttributedString.Key : Any ]
         } set {
@@ -264,7 +264,7 @@ public extension UIViewController {
     }
 
     /// A closure that fires when a sharing event completes, whether it is succeeds or fails.
-    public var sharingCompleted: SharingCompletedEvent? {
+    var sharingCompleted: SharingCompletedEvent? {
         get {
             guard let box = objc_getAssociatedObject(self, &AssociatedObjectKeys.sharingCompleted) as? SharingCompletedEventBox else {
                 return nil
@@ -292,7 +292,7 @@ public extension UIViewController {
 
     /// A temporary store for the original `titleTextAttributes` while we are presenting a
     /// `MFMailComposeViewController` or `MFMessageComposeViewController`, to be restored after use.
-    public var temporarySharingBarButtonItemAttributes: [ AnyHashable : Any ]? {
+    var temporarySharingBarButtonItemAttributes: [ AnyHashable : Any ]? {
         get {
             return objc_getAssociatedObject(self, &AssociatedObjectKeys.temporarySharingBarButtonItemAttributes) as? [ AnyHashable : Any ]
         } set {
