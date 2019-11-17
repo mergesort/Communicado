@@ -105,7 +105,7 @@ Beautiful, isn't it?
 ## Installation
 For **Swift 3** support, use version **2.0.2**. <br>
 For **Swift 4** support, you can use version **3.0**. <br>
-For **Swift 4.2** support, you can use version **3.1** or above.
+For **Swift 4.2** support, you can use version **3.1** or above. <br>
 For **Swift 5.1** support, you can use version **3.2** or above.
 
 You can use [CocoaPods](http://cocoapods.org/) to install `Communicado` by adding it to your `Podfile`:
