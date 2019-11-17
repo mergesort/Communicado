@@ -7,20 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B73EA0E01F64D5E000D813E5 /* ShareDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73EA0DF1F64D5E000D813E5 /* ShareDestination.swift */; };
-		B73EA0E11F64D9E600D813E5 /* UIViewController+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA471F649D7D00E82AAE /* UIViewController+Sharing.swift */; };
+		B76E5F5F2380E47000736662 /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E5F5A2380E47000736662 /* AttachmentType.swift */; };
+		B76E5F602380E47000736662 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E5F5B2380E47000736662 /* Attachment.swift */; };
+		B76E5F612380E47000736662 /* UIViewController+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E5F5C2380E47000736662 /* UIViewController+Sharing.swift */; };
+		B76E5F622380E47000736662 /* ShareParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E5F5D2380E47000736662 /* ShareParameters.swift */; };
+		B76E5F632380E47000736662 /* ShareDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76E5F5E2380E47000736662 /* ShareDestination.swift */; };
 		B7FDCA351F649D4600E82AAE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA341F649D4600E82AAE /* AppDelegate.swift */; };
 		B7FDCA371F649D4600E82AAE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA361F649D4600E82AAE /* ViewController.swift */; };
 		B7FDCA3A1F649D4600E82AAE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7FDCA381F649D4600E82AAE /* Main.storyboard */; };
 		B7FDCA3C1F649D4600E82AAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7FDCA3B1F649D4600E82AAE /* Assets.xcassets */; };
 		B7FDCA3F1F649D4600E82AAE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7FDCA3D1F649D4600E82AAE /* LaunchScreen.storyboard */; };
-		B7FDCA491F649DAB00E82AAE /* AttachmentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA481F649DAB00E82AAE /* AttachmentType.swift */; };
-		B7FDCA4B1F649DBD00E82AAE /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA4A1F649DBD00E82AAE /* Attachment.swift */; };
-		B7FDCA4F1F649DE100E82AAE /* ShareParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDCA4E1F649DE100E82AAE /* ShareParameters.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		B73EA0DF1F64D5E000D813E5 /* ShareDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareDestination.swift; sourceTree = "<group>"; };
+		B76E5F5A2380E47000736662 /* AttachmentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentType.swift; sourceTree = "<group>"; };
+		B76E5F5B2380E47000736662 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		B76E5F5C2380E47000736662 /* UIViewController+Sharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Sharing.swift"; sourceTree = "<group>"; };
+		B76E5F5D2380E47000736662 /* ShareParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareParameters.swift; sourceTree = "<group>"; };
+		B76E5F5E2380E47000736662 /* ShareDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareDestination.swift; sourceTree = "<group>"; };
 		B7FDCA311F649D4600E82AAE /* Communicado.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Communicado.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7FDCA341F649D4600E82AAE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7FDCA361F649D4600E82AAE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -28,10 +32,6 @@
 		B7FDCA3B1F649D4600E82AAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7FDCA3E1F649D4600E82AAE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7FDCA401F649D4600E82AAE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B7FDCA471F649D7D00E82AAE /* UIViewController+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Sharing.swift"; sourceTree = "<group>"; };
-		B7FDCA481F649DAB00E82AAE /* AttachmentType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentType.swift; sourceTree = "<group>"; };
-		B7FDCA4A1F649DBD00E82AAE /* Attachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
-		B7FDCA4E1F649DE100E82AAE /* ShareParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareParameters.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +45,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B76E5F582380E47000736662 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				B76E5F592380E47000736662 /* Communicado */,
+			);
+			name = Sources;
+			path = ../../Sources;
+			sourceTree = "<group>";
+		};
+		B76E5F592380E47000736662 /* Communicado */ = {
+			isa = PBXGroup;
+			children = (
+				B76E5F5A2380E47000736662 /* AttachmentType.swift */,
+				B76E5F5B2380E47000736662 /* Attachment.swift */,
+				B76E5F5C2380E47000736662 /* UIViewController+Sharing.swift */,
+				B76E5F5D2380E47000736662 /* ShareParameters.swift */,
+				B76E5F5E2380E47000736662 /* ShareDestination.swift */,
+			);
+			path = Communicado;
+			sourceTree = "<group>";
+		};
 		B7FDCA281F649D4600E82AAE = {
 			isa = PBXGroup;
 			children = (
@@ -64,7 +85,7 @@
 		B7FDCA331F649D4600E82AAE /* Communicado */ = {
 			isa = PBXGroup;
 			children = (
-				B7FDCA461F649D7D00E82AAE /* Source */,
+				B76E5F582380E47000736662 /* Sources */,
 				B7FDCA341F649D4600E82AAE /* AppDelegate.swift */,
 				B7FDCA361F649D4600E82AAE /* ViewController.swift */,
 				B7FDCA381F649D4600E82AAE /* Main.storyboard */,
@@ -73,19 +94,6 @@
 				B7FDCA401F649D4600E82AAE /* Info.plist */,
 			);
 			path = Communicado;
-			sourceTree = "<group>";
-		};
-		B7FDCA461F649D7D00E82AAE /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				B7FDCA471F649D7D00E82AAE /* UIViewController+Sharing.swift */,
-				B7FDCA481F649DAB00E82AAE /* AttachmentType.swift */,
-				B7FDCA4A1F649DBD00E82AAE /* Attachment.swift */,
-				B7FDCA4E1F649DE100E82AAE /* ShareParameters.swift */,
-				B73EA0DF1F64D5E000D813E5 /* ShareDestination.swift */,
-			);
-			name = Source;
-			path = ../../Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,12 +169,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B73EA0E11F64D9E600D813E5 /* UIViewController+Sharing.swift in Sources */,
-				B7FDCA4B1F649DBD00E82AAE /* Attachment.swift in Sources */,
-				B7FDCA491F649DAB00E82AAE /* AttachmentType.swift in Sources */,
-				B73EA0E01F64D5E000D813E5 /* ShareDestination.swift in Sources */,
-				B7FDCA4F1F649DE100E82AAE /* ShareParameters.swift in Sources */,
+				B76E5F602380E47000736662 /* Attachment.swift in Sources */,
+				B76E5F622380E47000736662 /* ShareParameters.swift in Sources */,
+				B76E5F5F2380E47000736662 /* AttachmentType.swift in Sources */,
+				B76E5F632380E47000736662 /* ShareDestination.swift in Sources */,
 				B7FDCA371F649D4600E82AAE /* ViewController.swift in Sources */,
+				B76E5F612380E47000736662 /* UIViewController+Sharing.swift in Sources */,
 				B7FDCA351F649D4600E82AAE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
