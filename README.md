@@ -3,8 +3,8 @@
 ### Sharing on iOS made easy.
 
 [![BuddyBuild](https://dashboard.buddybuild.com/api/statusImage?appID=59b695f696d4600001f5144a&branch=master&build=latest)](https://dashboard.buddybuild.com/apps/59b695f696d4600001f5144a/build/latest?branch=master)
-[![Pod Version](https://img.shields.io/badge/Pod-3.1-6193DF.svg)](https://cocoapods.org/)
-![Swift Version](https://img.shields.io/badge/Swift-4.2-brightgreen.svg)
+[![Pod Version](https://img.shields.io/badge/Pod-3.2-6193DF.svg)](https://cocoapods.org/)
+![Swift Version](https://img.shields.io/badge/Swift-5.1-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/License-MIT-lightgrey.svg) 
 ![Plaform](https://img.shields.io/badge/Platform-iOS-lightgrey.svg)
 
@@ -106,6 +106,7 @@ Beautiful, isn't it?
 For **Swift 3** support, use version **2.0.2**. <br>
 For **Swift 4** support, you can use version **3.0**. <br>
 For **Swift 4.2** support, you can use version **3.1** or above.
+For **Swift 5.1** support, you can use version **3.2** or above.
 
 You can use [CocoaPods](http://cocoapods.org/) to install `Communicado` by adding it to your `Podfile`:
 
