@@ -16,7 +16,7 @@ public typealias SharingCompletedEvent = (ShareResult) -> Void
 /// A protocol for defining where the share functionality for `UIViewController`s exists.
 public protocol SharingCapableViewController: UIViewController {}
 
-extension SharingCapableViewController {
+public extension SharingCapableViewController {
 
     /// Share using UIActivityViewController.
     ///
